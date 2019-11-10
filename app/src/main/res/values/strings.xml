@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">FiveGroup</string>
+    <string name="title_activity_find_doctor">FindDoctor</string>
+</resources>
