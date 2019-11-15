@@ -55,6 +55,7 @@
                         <ImageView
                             android:layout_width="70dp"
                             android:layout_height="70dp"
+                            android:contentDescription="@string/doctor"
                             android:src="@drawable/doctor" />
 
                         <TextView
@@ -90,6 +91,7 @@
                         <ImageView
                             android:layout_width="70dp"
                             android:layout_height="70dp"
+                            android:contentDescription="@string/question"
                             android:src="@drawable/question" />
 
                         <TextView
@@ -137,6 +139,7 @@
                         <ImageView
                             android:layout_width="70dp"
                             android:layout_height="70dp"
+                            android:contentDescription="@string/qrcode"
                             android:src="@drawable/qrcode" />
 
                         <TextView
@@ -172,6 +175,7 @@
                         <ImageView
                             android:layout_width="70dp"
                             android:layout_height="70dp"
+                            android:contentDescription="@string/notes"
                             android:src="@drawable/notes" />
 
                         <TextView
@@ -219,6 +223,7 @@
                         <ImageView
                             android:layout_width="70dp"
                             android:layout_height="70dp"
+                            android:contentDescription="@string/alarm"
                             android:src="@drawable/alarm" />
 
                         <TextView
@@ -254,6 +259,7 @@
                         <ImageView
                             android:layout_width="70dp"
                             android:layout_height="70dp"
+                            android:contentDescription="@string/tools"
                             android:src="@drawable/tools" />
 
                         <TextView
@@ -302,6 +308,7 @@
                             android:id="@+id/news"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
+                            android:contentDescription="@string/news"
                             android:src="@drawable/news" />
 
                         <TextView
@@ -337,6 +344,7 @@
                         <ImageView
                             android:layout_width="70dp"
                             android:layout_height="70dp"
+                            android:contentDescription="@string/reviews"
                             android:src="@drawable/reviews" />
 
                         <TextView
