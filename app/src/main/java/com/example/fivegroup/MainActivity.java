@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         //取得主頁面的元素，並設置點擊事件監聽器
+        CardView records = findViewById(R.id.card04);
+        records.setOnClickListener(new recordsListener());
         CardView news = findViewById(R.id.card07);
         news.setOnClickListener(new newsListener());
     }
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     private class recordsListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, News_Activity.class);
+            Intent intent = new Intent(MainActivity.this, RecordsActivity.class);
             startActivity(intent);
         }
     }
