@@ -89,7 +89,8 @@ public class DBhelper_Activity extends SQLiteOpenHelper {
         //體重紀錄
         String DATABASE_CREATE_TABLE_WEIGHT =
                 "create table weight("
-                        + "date TEXT PRIMARY KEY,"
+                        + "_ID  INTEGER PRIMARY KEY AUTOINCREMENT,"
+                        + "date TEXT NOT NULL UNIQUE,"
                         + "day REAL,"
                         + "night REAL,"
                         + "note TEXT"
@@ -97,7 +98,8 @@ public class DBhelper_Activity extends SQLiteOpenHelper {
         //血糖紀錄
         String DATABASE_CREATE_TABLE_BLOODSUGAR =
                 "create table bloodsugar("
-                        + "date TEXT PRIMARY KEY,"
+                        + "_ID  INTEGER PRIMARY KEY AUTOINCREMENT,"
+                        + "date TEXT NOT NULL UNIQUE,"
                         + "day_before INT,"
                         + "day_after INT,"
                         + "noon_before INT,"
@@ -110,7 +112,8 @@ public class DBhelper_Activity extends SQLiteOpenHelper {
         //血壓紀錄
         String DATABASE_CREATE_TABLE_BLOODPRESSURE =
                 "create table bloodpressure("
-                        + "date TEXT PRIMARY KEY,"
+                        + "_ID  INTEGER PRIMARY KEY AUTOINCREMENT,"
+                        + "date TEXT NOT NULL UNIQUE,"
                         + "day_hight INT,"
                         + "day_low INT,"
                         + "day_pulse INT,"
