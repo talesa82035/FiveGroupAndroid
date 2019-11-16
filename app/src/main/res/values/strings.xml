@@ -1,4 +1,12 @@
 <resources>
-    <string name="app_name">FiveGroup</string>
-    <string name="title_activity_find_doctor">FindDoctor</string>
+    <string name="app_name">專題實作_第五組</string>
+    <string name="doctor">看診查詢</string>
+    <string name="question">該看哪科</string>
+    <string name="reviews">意見回饋</string>
+    <string name="news">最新消息</string>
+    <string name="tools">實用工具</string>
+    <string name="alarm">吃藥提醒</string>
+    <string name="qrcode">食品成分</string>
+    <string name="notes">個人記錄</string>
 </resources>
+
