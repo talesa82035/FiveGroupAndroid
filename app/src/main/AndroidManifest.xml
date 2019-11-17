@@ -22,7 +22,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".News_Activity" />
+<<<<<<< HEAD
         <activity android:name=".Announcements_Activity" />
+=======
+        <activity android:name=".newsDetail_Activity" />
+
+>>>>>>> pr/2
     </application>
 
 </manifest>
