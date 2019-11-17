@@ -83,10 +83,10 @@ public class News_Activity extends AppCompatActivity {
             str1 = "標題:" + o.getString("標題") + "\n\n"
                     + "發布日期:" + o.getString("發布日期");
             str2 = o.getString("內容");
+
             list.add(str1);
             context.add(str2);
         }
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
 
         lv.setAdapter(adapter);
@@ -97,10 +97,8 @@ public class News_Activity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-
-            final String detail = context.get(i);
             final String title = list.get(i);
-
+            final String detail = context.get(i).replace("&ensp;","").replace("<br />","");
 
             Intent intent = new Intent(News_Activity.this, newsDetail_Activity.class);
             Bundle bundle = new Bundle();
