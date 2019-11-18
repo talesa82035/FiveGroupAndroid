@@ -9,6 +9,7 @@ import android.view.SurfaceView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.vision.CameraSource;
@@ -27,6 +28,10 @@ public class Qrcode_Activity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("食品成分掃描");
+        setSupportActionBar(toolbar);
 
         surfaceView = findViewById(R.id.qrcodesurface);
         textView = findViewById(R.id.qrcodetext);
