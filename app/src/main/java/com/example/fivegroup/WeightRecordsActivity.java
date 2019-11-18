@@ -89,7 +89,9 @@ public class WeightRecordsActivity extends AppCompatActivity {
             t.show();
             Cursor c = db.rawQuery(" select date,day,night,note from "+ DATABASE_TABLE +" WHERE date = "+ date,null);
             if(c.getCount()==0){
-                return;
+                weight_day.setText("0");
+                weight_night.setText("0");
+                weight_note.setText("");
             }
             else if(c.getCount()>0){
                 c.moveToFirst();    // 移到第 1 筆資料

@@ -5,8 +5,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.os.Bundle;
+import android.content.pm.PackageManager;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,9 +31,13 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setSubtitle("專題實作");
         setSupportActionBar(toolbar);
 
+        getPermissionsCamera();
+
 
 
         //取得主頁面的元素，並設置點擊事件監聽器
+        CardView ingredients = findViewById(R.id.card03);
+        ingredients.setOnClickListener(new ingredientsListener());
         CardView records = findViewById(R.id.card04);
         records.setOnClickListener(new recordsListener());
         CardView news = findViewById(R.id.card07);
@@ -84,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     private class ingredientsListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, News_Activity.class);
+            Intent intent = new Intent(MainActivity.this, Qrcode_Activity.class);
             startActivity(intent);
         }
     }
@@ -126,6 +133,15 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = new Intent(MainActivity.this, News_Activity.class);
             startActivity(intent);
+        }
+    }
+    //取得相機權限
+    public void getPermissionsCamera(){
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},1);
+        }else{
+            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.CAMERA},1);
         }
     }
 }
