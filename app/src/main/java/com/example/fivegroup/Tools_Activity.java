@@ -20,7 +20,7 @@ public class Tools_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //前往BMI計算
-        Button bmi = findViewById(R.id.button2);
+        Button bmi = findViewById(R.id.btn1);
         bmi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
