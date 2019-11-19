@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         ingredients.setOnClickListener(new ingredientsListener());
         CardView records = findViewById(R.id.card04);
         records.setOnClickListener(new recordsListener());
+        CardView tools = findViewById(R.id.card06);
+        tools.setOnClickListener(new toolsListener());
         CardView news = findViewById(R.id.card07);
         news.setOnClickListener(new newsListener());
     }
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
     private class toolsListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, News_Activity.class);
+            Intent intent = new Intent(MainActivity.this, Tools_Activity.class);
             startActivity(intent);
         }
     }
