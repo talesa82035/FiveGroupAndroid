@@ -71,7 +71,15 @@ public class WeightRecordsActivity extends AppCompatActivity {
             cv.put("day",weight_d);
             cv.put("night",weight_n);
             cv.put("note",weight_no);
-            db.replace(DATABASE_TABLE,null,cv);
+            Cursor c = getCursor(date);
+            int row_count = c.getCount();
+            if(row_count ==0)
+            {
+                db.insert(DATABASE_TABLE,null,cv);
+            }else
+                {
+                    db.update(DATABASE_TABLE,cv,date +"="+ date,null);
+                }
             Toast t = Toast.makeText(WeightRecordsActivity.this,"今天:"+date
                     +"\n"+"早上體重"+ weight_d
                     +"\n"+"晚上體重"+ weight_n
@@ -85,20 +93,32 @@ public class WeightRecordsActivity extends AppCompatActivity {
         public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
             Year = year;Month=month+1;Day=dayOfMonth;
             date = Year+"/"+Month+"/"+Day;
-            Toast t = Toast.makeText(WeightRecordsActivity.this,"今天:"+ date,Toast.LENGTH_LONG);
+            Cursor c = getCursor(date);
+            Toast t = Toast.makeText(WeightRecordsActivity.this,"今天:"+ date +"\n 資料"+c.getCount(),Toast.LENGTH_LONG);
             t.show();
-            Cursor c = db.rawQuery(" select date,day,night,note from "+ DATABASE_TABLE +" WHERE date = "+ date,null);
-            if(c.getCount()==0){
+            int row_count = c.getCount();
+            if(row_count >0 ){
+                c.moveToFirst();    // 移到第 1 筆資料
+                String weight_day_content = c.getString(2);
+                String weight_night_content = c.getString(3);
+                String weight_note_content = c.getString(4);
+                weight_day.setText(weight_day_content);
+                weight_night.setText(weight_night_content);
+                weight_note.setText(weight_note_content);
+                c.close();
+            }
+            else{
                 weight_day.setText("0");
                 weight_night.setText("0");
                 weight_note.setText("");
-            }
-            else if(c.getCount()>0){
-                c.moveToFirst();    // 移到第 1 筆資料
-                weight_day.setText(c.getString(1));
-                weight_night.setText(c.getString(2));
-                weight_note.setText(c.getString(3));
+                c.close();
             }
         }
+    }
+    private Cursor getCursor(String today){
+        String sql = "SELECT * FROM " + DATABASE_TABLE + " WHERE  date  =  " + today;
+        Cursor c = db.rawQuery(sql,null);
+        startManagingCursor(c);
+        return  c;
     }
 }
