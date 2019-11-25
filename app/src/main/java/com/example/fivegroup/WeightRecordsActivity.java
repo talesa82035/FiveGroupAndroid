@@ -25,6 +25,7 @@ public class WeightRecordsActivity extends AppCompatActivity {
     private String date,weight_no;
     private int Year,Month,Day;
     private Float weight_d,weight_n;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +53,13 @@ public class WeightRecordsActivity extends AppCompatActivity {
         Toast t = Toast.makeText(WeightRecordsActivity.this,"今天:"+ date,Toast.LENGTH_LONG);
         t.show();
     }
+
     @Override
     protected void onStop(){
         super.onStop();
         db.close();
     }
+
     private class weightrecordListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -78,7 +81,7 @@ public class WeightRecordsActivity extends AppCompatActivity {
                 db.insert(DATABASE_TABLE,null,cv);
             }else
                 {
-                    db.update(DATABASE_TABLE,cv,date +"="+ date,null);
+                    db.update(DATABASE_TABLE,cv,"date" +"='"+ date+"'",null);
                 }
             Toast t = Toast.makeText(WeightRecordsActivity.this,"今天:"+date
                     +"\n"+"早上體重"+ weight_d
@@ -88,6 +91,7 @@ public class WeightRecordsActivity extends AppCompatActivity {
 
         }
     }
+
     private class CalendarChangeListener implements CalendarView.OnDateChangeListener{
         @Override
         public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -115,10 +119,11 @@ public class WeightRecordsActivity extends AppCompatActivity {
             }
         }
     }
+    
     private Cursor getCursor(String today){
-        String sql = "SELECT * FROM " + DATABASE_TABLE + " WHERE  date  =  " + today;
+        String sql = "SELECT * FROM " + DATABASE_TABLE + " WHERE  date  =  '" + today+"'";
         Cursor c = db.rawQuery(sql,null);
-        startManagingCursor(c);
+//        startManagingCursor(c);
         return  c;
     }
 }
