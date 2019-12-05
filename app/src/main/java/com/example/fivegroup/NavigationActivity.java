@@ -52,6 +52,7 @@ public class NavigationActivity extends AppCompatActivity implements OnMapReadyC
         et_startingPlace = (EditText) findViewById(R.id.et_startingPlace);
         et_destination = (EditText) findViewById(R.id.et_destination);
         Button btnStartNavigation = findViewById(R.id.btnStartNavigation);
+        Button btnCallPhone = findViewById(R.id.btnCallPhone);
 
         btnStartNavigation.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -60,6 +61,15 @@ public class NavigationActivity extends AppCompatActivity implements OnMapReadyC
                     getAddress2LngLat_startingPlace_lngLat(et_startingPlace.getText().toString());
                     getAddress2LngLat_startingPlace_lngLat(et_destination.getText().toString());
                 }
+            }
+        });
+
+        btnCallPhone.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_DIAL);
+                i.setData(Uri.parse("tel:+073357885"));
+                startActivity(i);
             }
         });
     }

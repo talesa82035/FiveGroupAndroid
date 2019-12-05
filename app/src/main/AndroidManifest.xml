@@ -12,9 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!--GoogleMap用，設定api權限key-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <!--註冊鬧鈴服務-->
+        <receiver
+            android:name=".AlarmReceiver"
+            android:process=":remote">
+        </receiver>
         <activity android:name=".Qrcode_Activity" />
         <activity android:name=".BloodPressureRecordsActivity"></activity>
         <activity android:name=".WeightRecordsActivity"></activity>
@@ -32,6 +38,19 @@
         <activity android:name=".Tools_Activity" />
         <activity android:name=".BMI_Activity" />
         <activity android:name=".NavigationActivity" />
+        <activity android:name=".AlarmActivity" />
+        <activity android:name=".NotificationActivity" />
     </application>
+
+<!--    &lt;!&ndash;設定app的網路操作權限(連接SQL Server用)&ndash;&gt;-->
+<!--    <uses-permission android:name="android.permission.INTERNET"/>-->
+<!--    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>-->
+<!--    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>-->
+
+    <!--加入震動權限-->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <!--加入撥號權限-->
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
 </manifest>

@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         ingredients.setOnClickListener(new ingredientsListener());
         CardView records = findViewById(R.id.card04);
         records.setOnClickListener(new recordsListener());
+        CardView notification = findViewById(R.id.card05);
+        notification.setOnClickListener(new notificationListener());
         CardView tools = findViewById(R.id.card06);
         tools.setOnClickListener(new toolsListener());
         CardView news = findViewById(R.id.card07);
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     private class notificationListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, News_Activity.class);
+            Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
             startActivity(intent);
         }
     }

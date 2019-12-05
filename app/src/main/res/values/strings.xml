@@ -14,5 +14,15 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string-array name="notification_frequency">
+        <item>每x日</item>
+        <item>每日, x次</item>
+        <item>每日, 每隔x小時</item>
+        <item>逢星期幾</item>
+        <item>持續x天, 暫停y天</item>
+    </string-array>
+    <string-array name="notification_duration">
+        <item>提醒到期日</item>
+        <item>共x天</item>
+    </string-array>
 </resources>
-

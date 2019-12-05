@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/cb_week1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="星期一" />
+
+        <CheckBox
+            android:id="@+id/cb_week2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="星期二" />
+
+        <CheckBox
+            android:id="@+id/cb_week3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="星期三" />
+
+        <CheckBox
+            android:id="@+id/cb_week4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="星期四" />
+
+        <CheckBox
+            android:id="@+id/cb_week5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="星期五" />
+
+        <CheckBox
+            android:id="@+id/cb_week6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="星期六" />
+
+        <CheckBox
+            android:id="@+id/cb_week7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="星期日" />
+    </LinearLayout>
+</FrameLayout>
