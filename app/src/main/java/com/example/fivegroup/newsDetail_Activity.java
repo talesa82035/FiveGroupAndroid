@@ -15,7 +15,7 @@ public class newsDetail_Activity extends AppCompatActivity {
 
         //加入自訂的ToolBar
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("食藥新聞");
+        toolbar.setTitle("食藥署新聞");
 
         setSupportActionBar(toolbar);
 

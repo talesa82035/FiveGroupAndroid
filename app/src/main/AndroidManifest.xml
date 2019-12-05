@@ -35,6 +35,7 @@
         <activity android:name=".Announcements_Activity" />
         <activity android:name=".News_Activity" />
         <activity android:name=".newsDetail_Activity" />
+        <activity android:name=".Query_Activity" />
         <activity android:name=".Tools_Activity" />
         <activity android:name=".BMI_Activity" />
         <activity android:name=".NavigationActivity" />
