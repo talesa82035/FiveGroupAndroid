@@ -51,16 +51,16 @@ public class MainActivity extends AppCompatActivity {
         CardView news = findViewById(R.id.card07);
         news.setOnClickListener(new newsListener());
     }
-    //鑄造Alertdialog 提醒視窗
+    //鑄造　AlertDialog 提醒視窗
     protected AlertDialog.Builder announcement(){
-        LayoutInflater announcementInflater = LayoutInflater.from(MainActivity.this);
-        final View v = announcementInflater.inflate(R.layout.activity_announcements, null);
-        AlertDialog.Builder announcement = new AlertDialog.Builder(this);
-        announcement.setTitle("系統公告")
+        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+        final View v = inflater.inflate(R.layout.activity_announcements, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("系統公告")
                 .setView(v)
                 .setMessage("好的開始\n成功的一半")
                 .setPositiveButton("確定",null);
-        return announcement;
+        return builder;
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     private class finddoctorListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, NavigationActivity.class);
+            Intent intent = new Intent(MainActivity.this, Search_Activity.class);
             startActivity(intent);
         }
     }
