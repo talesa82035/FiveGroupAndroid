@@ -8,6 +8,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.net.Uri;
 import android.os.Bundle;
 import android.content.pm.PackageManager;
 import android.content.Intent;
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         tools.setOnClickListener(new toolsListener());
         CardView news = findViewById(R.id.card07);
         news.setOnClickListener(new newsListener());
+        CardView feedback = findViewById(R.id.card08);
+        feedback.setOnClickListener(new feedbackListener());
     }
     //鑄造Alertdialog 提醒視窗
     protected AlertDialog.Builder announcement(){
@@ -139,7 +142,8 @@ public class MainActivity extends AppCompatActivity {
     private class feedbackListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, News_Activity.class);
+            Uri uri=Uri.parse("http://10.10.3.104/Feedback/Create");
+            Intent intent=new Intent(Intent.ACTION_VIEW,uri);
             startActivity(intent);
         }
     }
