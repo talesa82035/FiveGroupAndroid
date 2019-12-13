@@ -41,6 +41,7 @@
         <activity android:name=".NavigationActivity" />
         <activity android:name=".AlarmActivity" />
         <activity android:name=".NotificationActivity" />
+        <activity android:name=".Search_Activity" />
     </application>
 
 <!--    &lt;!&ndash;設定app的網路操作權限(連接SQL Server用)&ndash;&gt;-->
