@@ -29,6 +29,13 @@
             android:text="血壓紀錄" />
 
         <Button
+            android:id="@+id/bloodsugarrecordbutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="血糖紀錄" />
+
+
+        <Button
             android:id="@+id/weightrecordbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -37,6 +37,15 @@ public class RecordsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //前往血糖紀錄
+        Button bloodsugarrerecord = findViewById(R.id.bloodsugarrecordbutton);
+        bloodsugarrerecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RecordsActivity.this, BloodsugarRecordsActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }
