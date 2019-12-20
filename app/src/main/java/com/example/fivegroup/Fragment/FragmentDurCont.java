@@ -5,38 +5,45 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
 import com.example.fivegroup.R;
 
-import java.util.HashMap;
-
 public class FragmentDurCont extends CommonFragment {
-    EditText et_x;
+    private EditText et_x;
+    public static final String DUR_CONT="DUR_CONT";
+    public static final String DUR_CONT_X="DUR_CONT_X";
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dur_cont, container, false);
 
         this.et_x = root.findViewById(R.id.et_x);
-
+        if(getArguments()!=null && getArguments().containsKey(FragmentDurCont.DUR_CONT_X)){
+            this.et_x.setText(Integer.toString(getArguments().getInt(FragmentDurCont.DUR_CONT_X)));
+        }
         return root;
     }
 
-    public static FragmentDurCont newInstance() {
-        FragmentDurCont frag = new FragmentDurCont();
-        return frag;
+    @Override
+    public Bundle getBundleResult(){
+        Bundle bundleData = new Bundle();
+        bundleData.putString(CommonFragment.CMD,FragmentDurCont.DUR_CONT);
+        bundleData.putInt(FragmentDurCont.DUR_CONT_X, Integer.parseInt(this.et_x.getText().toString()));
+        return bundleData;
     }
 
     @Override
-    public void setResult(HashMap result){
-        this.et_x.setText(result.get("no_dur_day").toString());
-    }
-
-    @Override
-    public HashMap getResult(){
-        HashMap result = new HashMap();
-        result.put("CMD","DUR_CONT");
-        result.put("X", Integer.parseInt(this.et_x.getText().toString()));
-        return result;
+    public String checkValidity(){
+        String message="";
+        String xStr = this.et_x.getText().toString();
+        if(xStr.equals("")){
+            message = "請輸入週期x值";
+            return message;
+        }
+        int xInt = Integer.parseInt(xStr);
+        if(xInt<=0){
+            message = "X值必須大於0";
+            return message;
+        }
+        return message;
     }
 
 }

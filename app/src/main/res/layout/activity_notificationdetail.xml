@@ -8,6 +8,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#E91E63"
+            android:textSize="18sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,12 +43,46 @@
                 android:layout_height="wrap_content"
                 android:text="開始日期" />
 
-            <EditText
-                android:id="@+id/et_startdate"
+            <TextView
+                android:id="@+id/tv_startdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="100dp"
+                android:inputType="text"
+                android:textSize="18sp"
+                />
+
+            <Button
+                android:id="@+id/btn_chooseStartDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="2019/12/01"
-                android:inputType="text" />
+                android:text="日期選擇" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/alarmTimeGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="提醒時間" />
+
+            <TextView
+                android:id="@+id/tv_alarmTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="100dp"
+                android:inputType="time"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/btn_chooseTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="時間提示" />
         </LinearLayout>
 
         <LinearLayout
@@ -119,22 +160,10 @@
             android:text="設定" />
 
         <Button
-            android:id="@+id/btn_cancle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="取消" />
-
-        <Button
             android:id="@+id/btn_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="刪除" />
 
-        <TextView
-            android:id="@+id/tv_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Info"
-            android:textSize="30sp" />
     </LinearLayout>
 </ScrollView>

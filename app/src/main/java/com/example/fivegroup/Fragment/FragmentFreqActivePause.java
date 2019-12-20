@@ -5,15 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
 import com.example.fivegroup.R;
 
-import java.util.HashMap;
-
 public class FragmentFreqActivePause extends CommonFragment {
-    EditText et_x;
-    EditText et_y;
-    EditText et_z;
+    private EditText et_x;
+    private EditText et_y;
+    private EditText et_z;
+    public static final String FREQ_ACTIVEPAUSE="FREQ_ACTIVEPAUSE";
+    public static final String FREQ_ACTIVEPAUSE_X="FREQ_ACTIVEPAUSE_X";
+    public static final String FREQ_ACTIVEPAUSE_Y="FREQ_ACTIVEPAUSE_Y";
+    public static final String FREQ_ACTIVEPAUSE_Z="FREQ_ACTIVEPAUSE_Z";
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_freq_active_pause, container, false);
@@ -21,23 +22,63 @@ public class FragmentFreqActivePause extends CommonFragment {
         this.et_x = root.findViewById(R.id.et_x);
         this.et_y = root.findViewById(R.id.et_y);
         this.et_z = root.findViewById(R.id.et_z);
+        if(getArguments()!=null && getArguments().containsKey(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_X) && getArguments().containsKey(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Y) && getArguments().containsKey(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Z)){
+            this.et_x.setText(Integer.toString(getArguments().getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_X)));
+            this.et_y.setText(Integer.toString(getArguments().getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Y)));
+            this.et_z.setText(Integer.toString(getArguments().getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Z)));
+        }
 
         return root;
     }
 
-    public static FragmentFreqActivePause newInstance() {
-        FragmentFreqActivePause frag = new FragmentFreqActivePause();
-        return frag;
+    @Override
+    public Bundle getBundleResult(){
+        Bundle bundleData = new Bundle();
+        bundleData.putString(CommonFragment.CMD,FragmentFreqActivePause.FREQ_ACTIVEPAUSE);
+        bundleData.putInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_X, Integer.parseInt(this.et_x.getText().toString()));
+        bundleData.putInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Y, Integer.parseInt(this.et_y.getText().toString()));
+        bundleData.putInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Z, Integer.parseInt(this.et_z.getText().toString()));
+        return bundleData;
     }
 
     @Override
-    public HashMap getResult(){
-        HashMap result = new HashMap();
-        result.put("CMD","FREQ_ACTIVEPAUSE");
-        result.put("X", Integer.parseInt(this.et_x.getText().toString()));
-        result.put("Y", Integer.parseInt(this.et_y.getText().toString()));
-        result.put("Z", Integer.parseInt(this.et_z.getText().toString()));
-        return result;
+    public String checkValidity(){
+        String message="";
+        String xStr = this.et_x.getText().toString();
+        String yStr = this.et_y.getText().toString();
+        String zStr = this.et_z.getText().toString();
+        if(xStr.equals("")){
+            message = "請輸入頻率x值";
+            return message;
+        }
+        int xInt = Integer.parseInt(xStr);
+        if(xInt<=0){
+            message = "X值必須大於0";
+            return message;
+        }
+        if(yStr.equals("")){
+            message = "請輸入頻率y值";
+            return message;
+        }
+        int yInt = Integer.parseInt(yStr);
+        if(yInt<0){
+            message = "Y值不能小於0";
+            return message;
+        }
+        if(zStr.equals("")){
+            message = "請輸入頻率z值";
+            return message;
+        }
+        int zInt = Integer.parseInt(zStr);
+        if(zInt<0){
+            message = "Z值不能小於0";
+            return message;
+        }
+        if(zInt>(xInt+yInt)){
+            message = "當前第幾天，不得小於0，或是大於持續天數+暫停天數";
+            return message;
+        }
+        return message;
     }
 
 }

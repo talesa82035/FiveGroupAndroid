@@ -2,26 +2,27 @@ package com.example.fivegroup.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-
-import java.util.HashMap;
 
 public class CommonFragment extends Fragment {
     protected Activity context;
-//    protected IFragmentCallBack iFragmentCallBack;
+    public static final String CMD="CMD";
+//    protected final long dayMillis = 24*60*60*1000;
+//    protected final long hourMillis = 60*60*1000;
+//    protected final long weekMillis = 7*dayMillis;
 
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = (Activity) context;
-//        iFragmentCallBack = (IFragmentCallBack) getActivity();
-        //mParam = getArguments().getString(ARG_PARAM);  //获取参数
     }
 
-    public void setResult(HashMap result){}
-
-    //for activity call
-    public HashMap getResult(){
+    public Bundle getBundleResult(){
         return null;
+    }
+
+    public String checkValidity(){
+        return "";
     }
 
 }
