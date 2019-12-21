@@ -30,7 +30,7 @@ public class BloodsugarRecordsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_records_weight);
+        setContentView(R.layout.activity_records_bloodsugar);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("血糖紀錄");
@@ -39,26 +39,12 @@ public class BloodsugarRecordsActivity extends AppCompatActivity {
         dbhelper = new DBhelper_Activity(this);
         db = dbhelper.getWritableDatabase();
 
-        calendarView = findViewById(R.id.BloodsugarcalendarView);
-        Bloodsugarrecord_day_before = findViewById(R.id.Bloodsugarrecord_day_before);
-        Bloodsugarrecord_day_after = findViewById(R.id.Bloodsugarrecord_day_after);
-        Bloodsugarrecord_noon_before = findViewById(R.id.Bloodsugarrecord_noon_before);
-        Bloodsugarrecord_noon_after = findViewById(R.id.Bloodsugarrecord_noon_after);
-        Bloodsugarrecord_night_before = findViewById(R.id.Bloodsugarrecord_night_before);
-        Bloodsugarrecord_night_after = findViewById(R.id.Bloodsugarrecord_night_after);
-        Bloodsugarrecord_bedtime = findViewById(R.id.Bloodsugarrecord_bedtime);
-        Bloodsugarrecord_note = findViewById(R.id.Bloodsugarrecord_note);
+        findElement();
 
-        bloodsugarrecord = findViewById(R.id.Bloodsugarrecord);
-        bloodsugarrecord.setOnClickListener(new bloodsugarrecordListener());
-        calendarView.setOnDateChangeListener(new CalendarChangeListener());
-        Calendar c = Calendar.getInstance();
-        Year = c.get(Calendar.YEAR);
-        Month = c.get(Calendar.MONTH) + 1;
-        Day = c.get(Calendar.DAY_OF_MONTH);
-        date = Year + "/" + Month + "/" + Day;
-        Toast t = Toast.makeText(BloodsugarRecordsActivity.this, "今天:" + date, Toast.LENGTH_LONG);
+        Toast t = Toast.makeText(BloodsugarRecordsActivity.this, "今天:" + getToday(), Toast.LENGTH_LONG);
         t.show();
+
+        changeValue(getToday());
     }
 
     @Override
@@ -127,32 +113,7 @@ public class BloodsugarRecordsActivity extends AppCompatActivity {
             Month = month + 1;
             Day = dayOfMonth;
             date = Year + "/" + Month + "/" + Day;
-            Cursor c = getCursor(date);
-            Toast t = Toast.makeText(BloodsugarRecordsActivity.this, "今天:" + date + "\n 資料" + c.getCount(), Toast.LENGTH_LONG);
-            t.show();
-            int row_count = c.getCount();
-            if (row_count > 0) {
-                c.moveToFirst();    // 移到第 1 筆資料
-                Bloodsugarrecord_day_before.setText(c.getString(2));
-                Bloodsugarrecord_day_after.setText(c.getString(3));
-                Bloodsugarrecord_noon_before.setText(c.getString(4));
-                Bloodsugarrecord_noon_after.setText(c.getString(5));
-                Bloodsugarrecord_night_before.setText(c.getString(6));
-                Bloodsugarrecord_night_after.setText(c.getString(7));
-                Bloodsugarrecord_bedtime.setText(c.getString(8));
-                Bloodsugarrecord_note.setText(c.getString(9));
-                c.close();
-            } else {
-                Bloodsugarrecord_day_before.setText("0");
-                Bloodsugarrecord_day_after.setText("0");
-                Bloodsugarrecord_noon_before.setText("0");
-                Bloodsugarrecord_noon_after.setText("0");
-                Bloodsugarrecord_night_before.setText("0");
-                Bloodsugarrecord_night_after.setText("0");
-                Bloodsugarrecord_bedtime.setText("0");
-                Bloodsugarrecord_note.setText("");
-                c.close();
-            }
+            changeValue(date);
         }
     }
 
@@ -161,5 +122,65 @@ public class BloodsugarRecordsActivity extends AppCompatActivity {
         Cursor c = db.rawQuery(sql, null);
 //        startManagingCursor(c);
         return c;
+    }
+    private void findElement()
+    {
+        Bloodsugarrecord_day_before = findViewById(R.id.Bloodsugarrecord_day_before);
+        Bloodsugarrecord_day_after = findViewById(R.id.Bloodsugarrecord_day_after);
+        Bloodsugarrecord_noon_before = findViewById(R.id.Bloodsugarrecord_noon_before);
+        Bloodsugarrecord_noon_after = findViewById(R.id.Bloodsugarrecord_noon_after);
+        Bloodsugarrecord_night_before = findViewById(R.id.Bloodsugarrecord_night_before);
+        Bloodsugarrecord_night_after = findViewById(R.id.Bloodsugarrecord_night_after);
+        Bloodsugarrecord_bedtime = findViewById(R.id.Bloodsugarrecord_bedtime);
+        Bloodsugarrecord_note = findViewById(R.id.Bloodsugarrecord_note);
+        bloodsugarrecord = findViewById(R.id.Bloodsugarrecord);
+        bloodsugarrecord.setOnClickListener(new bloodsugarrecordListener());
+        calendarView = findViewById(R.id.BloodsugarcalendarView);
+        calendarView.setOnDateChangeListener(new CalendarChangeListener());
+    }
+    private String getToday()
+    {
+        Calendar c = Calendar.getInstance();
+        Year = c.get(Calendar.YEAR);
+        Month = c.get(Calendar.MONTH) + 1;
+        Day = c.get(Calendar.DAY_OF_MONTH);
+        date = Year + "/" + Month + "/" + Day;
+        return date;
+    }
+    public void changeValue(String date)
+    {
+        Cursor c = getCursor(date);
+        Toast t = Toast.makeText(BloodsugarRecordsActivity.this, "今天:" + date + "\n 資料" + c.getCount(), Toast.LENGTH_LONG);
+        t.show();
+        int row_count = c.getCount();
+        if (row_count > 0) {
+            c.moveToFirst();    // 移到第 1 筆資料
+            Bloodsugarrecord_day_before.setText(c.getString(2));
+            Bloodsugarrecord_day_after.setText(c.getString(3));
+            Bloodsugarrecord_noon_before.setText(c.getString(4));
+            Bloodsugarrecord_noon_after.setText(c.getString(5));
+            Bloodsugarrecord_night_before.setText(c.getString(6));
+            Bloodsugarrecord_night_after.setText(c.getString(7));
+            Bloodsugarrecord_bedtime.setText(c.getString(8));
+            if(c.getString(9)!=null)
+            {
+                Bloodsugarrecord_note.setText(c.getString(9));
+            }
+            else
+            {
+                Bloodsugarrecord_note.setText("");
+            }
+            c.close();
+        } else {
+            Bloodsugarrecord_day_before.setText("0");
+            Bloodsugarrecord_day_after.setText("0");
+            Bloodsugarrecord_noon_before.setText("0");
+            Bloodsugarrecord_noon_after.setText("0");
+            Bloodsugarrecord_night_before.setText("0");
+            Bloodsugarrecord_night_after.setText("0");
+            Bloodsugarrecord_bedtime.setText("0");
+            Bloodsugarrecord_note.setText("");
+            c.close();
+        }
     }
 }

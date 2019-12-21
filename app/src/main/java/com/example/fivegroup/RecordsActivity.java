@@ -33,7 +33,7 @@ public class RecordsActivity extends AppCompatActivity {
         bloodpressurerecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RecordsActivity.this, BloodPressureRecordsActivity.class);
+                Intent intent = new Intent(RecordsActivity.this, BloodpressureRecordsActivity.class);
                 startActivity(intent);
             }
         });

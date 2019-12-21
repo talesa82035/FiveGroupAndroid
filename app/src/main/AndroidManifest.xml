@@ -22,7 +22,8 @@
             android:process=":remote">
         </receiver>
         <activity android:name=".Qrcode_Activity" />
-        <activity android:name=".BloodPressureRecordsActivity"></activity>
+        <activity android:name=".BloodpressureRecordsActivity"></activity>
+        <activity android:name=".BloodsugarRecordsActivity"></activity>
         <activity android:name=".WeightRecordsActivity"></activity>
         <activity android:name=".RecordsActivity" />
         <activity android:name=".MainActivity">
