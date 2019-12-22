@@ -68,8 +68,12 @@ public class FragmentFreqHour extends CommonFragment {
         Bundle bundleData = new Bundle();
         bundleData.putString(CommonFragment.CMD,FragmentFreqHour.FREQ_HOUR);
         bundleData.putInt(FragmentFreqHour.FREQ_HOUR_X, Integer.parseInt(this.et_x.getText().toString()));
-        bundleData.putString(FragmentFreqHour.FREQ_HOUR_FIRSTDATE, this.tv_firstDate.getText().toString());
-        bundleData.putString(FragmentFreqHour.FREQ_HOUR_PREVDATE, this.tv_prevDate.getText().toString());
+        if(!this.tv_firstDate.getText().toString().matches("")){
+            bundleData.putString(FragmentFreqHour.FREQ_HOUR_FIRSTDATE, this.tv_firstDate.getText().toString());
+        }
+        if(!this.tv_prevDate.getText().toString().matches("")){
+            bundleData.putString(FragmentFreqHour.FREQ_HOUR_PREVDATE, this.tv_prevDate.getText().toString());
+        }
         return bundleData;
     }
 
@@ -180,7 +184,16 @@ public class FragmentFreqHour extends CommonFragment {
             message = "X值必須大於0";
             return message;
         }
+        if(!this.tv_firstDate.getText().toString().matches("")){
+            if(this.firstDate_Date=="" || this.firstDate_Time=="")
+            message = "欲輸入首次服藥時間，請填寫完整的日期與時間";
+            return message;
+        }
+//        if(!this.tv_prevDate.getText().toString().matches("")){
+//            if(this.prevDate_Date=="" || this.prevDate_Time=="")
+//                message = "欲輸入上一次服藥時間，請填寫完整的日期與時間";
+//            return message;
+//        }
         return message;
     }
-
 }

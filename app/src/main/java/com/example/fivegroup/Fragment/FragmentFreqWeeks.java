@@ -10,8 +10,8 @@ import com.example.fivegroup.R;
 public class FragmentFreqWeeks extends CommonFragment {
     private CheckBox cb_week1, cb_week2, cb_week3, cb_week4, cb_week5, cb_week6, cb_week7;
     public static final String FREQ_WEEKS="FREQ_WEEKS";
-    public static final String FREQ_WEEKS_WEEK1="FREQ_WEEKS_WEEK1";
-    public static final String FREQ_WEEKS_WEEK2="FREQ_WEEKS_WEEK2";
+    public static final String FREQ_WEEKS_WEEK1="FREQ_WEEKS_WEEK1";//星期日
+    public static final String FREQ_WEEKS_WEEK2="FREQ_WEEKS_WEEK2";//星期一
     public static final String FREQ_WEEKS_WEEK3="FREQ_WEEKS_WEEK3";
     public static final String FREQ_WEEKS_WEEK4="FREQ_WEEKS_WEEK4";
     public static final String FREQ_WEEKS_WEEK5="FREQ_WEEKS_WEEK5";

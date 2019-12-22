@@ -40,8 +40,8 @@ public class FragmentFreqTime extends CommonFragment {
         this.calendar.setTimeInMillis(System.currentTimeMillis());
         if(getArguments()!=null && getArguments().containsKey(FragmentFreqTime.FREQ_TIME_LIST)){
             ArrayList<String> newAlarmTimeList = getArguments().getStringArrayList(FragmentFreqTime.FREQ_TIME_LIST);
-            for(int i=0; i<newAlarmTimeList.size(); i++){
-                this.addNewTime(newAlarmTimeList.get(i));
+            for(int i=1; i<newAlarmTimeList.size(); i++){
+                this.addNewTime(newAlarmTimeList.get(i).split(" ")[1]);
             }
         }
         return root;
@@ -53,7 +53,7 @@ public class FragmentFreqTime extends CommonFragment {
         bundleData.putString(CommonFragment.CMD,FragmentFreqTime.FREQ_TIME);
         HashMap newTimeObj;
         ArrayList<String> newTimeList = new ArrayList<>();
-        for(int i=0; i<this.newTimeList.size(); i++){
+        for(int i=this.newTimeList.size()-1; i>=0; i--){
             if(this.newTimeList.get(i)!=null){
                 newTimeObj = this.newTimeList.get(i);
                 newTimeList.add((String) newTimeObj.get("FORMAT_DATE"));
@@ -76,8 +76,8 @@ public class FragmentFreqTime extends CommonFragment {
                     calendar.set(Calendar.MINUTE, minute);
                     calendar.set(Calendar.SECOND, 0);
                     calendar.set(Calendar.MILLISECOND, 0);
-
-                    addNewTime(calendar);
+                    String str = ft.format(calendar.getTime());
+                    addNewTime(str.split(" ")[1]);
                 }
             }, hour, minute, true).show();
         }
@@ -92,45 +92,6 @@ public class FragmentFreqTime extends CommonFragment {
         }
     };
 
-    public void addNewTime(Calendar calendar){
-        TextView tv = new TextView(this.context);
-        tv.setText("時間點:");
-        tv.setLayoutParams(new LinearLayout.LayoutParams(Constraints.LayoutParams.WRAP_CONTENT,Constraints.LayoutParams.WRAP_CONTENT));
-
-        TextView tv2 = new TextView(this.context);
-        tv2.setWidth(200);
-        tv2.setTextSize(18);
-
-        String strDateFormat = ft.format(calendar.getTime());
-        String[] dataArr = strDateFormat.split(" ");
-        tv2.setText(dataArr[1]);
-        tv2.setLayoutParams(new LinearLayout.LayoutParams(Constraints.LayoutParams.WRAP_CONTENT,Constraints.LayoutParams.WRAP_CONTENT));
-
-        Button btnDeleteTime = new Button(this.context);
-        btnDeleteTime.setId(this.newTimeLinearLayoutIndex);
-        btnDeleteTime.setText("刪除");
-        btnDeleteTime.setLayoutParams(new LinearLayout.LayoutParams(Constraints.LayoutParams.MATCH_PARENT,Constraints.LayoutParams.WRAP_CONTENT));
-        btnDeleteTime.setOnClickListener(this.removeNewTimeClickHandler);
-
-        LinearLayout linearLayout = new LinearLayout(this.context);
-        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.addView(tv);
-        linearLayout.addView(tv2);
-        linearLayout.addView(btnDeleteTime);
-
-        this.ll_Container.addView(linearLayout);
-
-        HashMap newTimeObj = new HashMap();
-        newTimeObj.put("TV_LABEL",tv);
-        newTimeObj.put("TV_VALUE",tv2);
-        newTimeObj.put("BTN_DELETE_TIME",btnDeleteTime);
-        newTimeObj.put("LINEARLAYOUT",linearLayout);
-        newTimeObj.put("CURRENT_ALARM_TIME", calendar.getTimeInMillis());
-        newTimeObj.put("FORMAT_DATE", strDateFormat);
-        this.newTimeList.add(newTimeObj);
-        this.newTimeLinearLayoutIndex++;
-    }
-
     public void addNewTime(String strDateFormat){
         TextView tv = new TextView(this.context);
         tv.setText("時間點:");
@@ -139,8 +100,7 @@ public class FragmentFreqTime extends CommonFragment {
         TextView tv2 = new TextView(this.context);
         tv2.setWidth(200);
         tv2.setTextSize(18);
-        String[] dataArr = strDateFormat.split(" ");
-        tv2.setText(dataArr[1]);
+        tv2.setText(strDateFormat);
         tv2.setLayoutParams(new LinearLayout.LayoutParams(Constraints.LayoutParams.WRAP_CONTENT,Constraints.LayoutParams.WRAP_CONTENT));
 
         Button btnDeleteTime = new Button(this.context);
@@ -158,11 +118,11 @@ public class FragmentFreqTime extends CommonFragment {
         this.ll_Container.addView(linearLayout);
 
         HashMap newTimeObj = new HashMap();
-        newTimeObj.put("TV_LABEL",tv);
-        newTimeObj.put("TV_VALUE",tv2);
-        newTimeObj.put("BTN_DELETE_TIME",btnDeleteTime);
+//        newTimeObj.put("TV_LABEL",tv);
+//        newTimeObj.put("TV_VALUE",tv2);
+//        newTimeObj.put("BTN_DELETE_TIME",btnDeleteTime);
         newTimeObj.put("LINEARLAYOUT",linearLayout);
-        newTimeObj.put("CURRENT_ALARM_TIME", calendar.getTimeInMillis());
+//        newTimeObj.put("CURRENT_ALARM_TIME", calendar.getTimeInMillis());
         newTimeObj.put("FORMAT_DATE", strDateFormat);
         this.newTimeList.add(newTimeObj);
         this.newTimeLinearLayoutIndex++;

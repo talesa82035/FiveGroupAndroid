@@ -81,7 +81,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
         this.dbhelper = new DBhelper_Activity(this);
         this.db = this.dbhelper.getWritableDatabase();
         this.notificationDB = new NotificationDB(this.db);
-
+        System.out.println("--NotificationDetailActivity--");
 //        this.notificationDB.clearTotalNotificationData();
 
         //init View
@@ -119,14 +119,14 @@ public class NotificationDetailActivity extends AppCompatActivity{
             this._ID = bundle.getInt("_ID");
             String no_title = bundle.getString("no_title");
             String no_startdate = bundle.getString("no_startdate");
-            int no_frequency = bundle.getInt("no_frequency");
-            int no_duration = bundle.getInt("no_duration");
+            int tableFreqIndex = bundle.getInt("no_frequency");
+            int tableDurIndex = bundle.getInt("no_duration");
             int no_active = bundle.getInt("no_active");
 
             this.et_title.setText(no_title);
             this.tv_startdate.setText(no_startdate);
-            this.sp_frequency.setSelection(no_frequency);
-            this.sp_duration.setSelection(no_duration);
+            this.sp_frequency.setSelection(tableFreqIndex);
+            this.sp_duration.setSelection(tableDurIndex);
             this.sw_isActive.setChecked((no_active==0)?false:true);
             this.btn_setting.setText("修改");
             this.btn_delete.setVisibility(View.VISIBLE);
@@ -141,14 +141,14 @@ public class NotificationDetailActivity extends AppCompatActivity{
 
         Bundle bundle = this.getIntent().getExtras();
         if (bundle != null) {
-            int no_frequency = bundle.getInt("no_frequency");
-            int no_duration = bundle.getInt("no_duration");
+            int tableFreqIndex = bundle.getInt("no_frequency");
+            int tableDurIndex = bundle.getInt("no_duration");
             //freq
-            CommonFragment f_fragment_freq = this.freqClassArr[no_frequency];;
-            f_fragment_freq.setArguments(this.notificationDB.getDBFrequency(this._ID,no_frequency));
+            CommonFragment f_fragment_freq = this.freqClassArr[tableFreqIndex];;
+            f_fragment_freq.setArguments(this.notificationDB.getDBFrequency(this._ID,tableFreqIndex));
             //dur
-            CommonFragment f_fragment_dur = this.durClassArr[no_duration];
-            f_fragment_dur.setArguments(this.notificationDB.getDBDuration(this._ID,no_duration));
+            CommonFragment f_fragment_dur = this.durClassArr[tableDurIndex];
+            f_fragment_dur.setArguments(this.notificationDB.getDBDuration(this._ID,tableDurIndex));
             //alarm
             ArrayList<Integer> alarmIdArr = this.notificationDB.getDBAlarmIdArrFromNoId(this._ID);
             if(alarmIdArr!=null){
@@ -184,7 +184,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
                     calendar.set(Calendar.MONTH, month);
                     calendar.set(Calendar.DAY_OF_MONTH, day);
 
-                    String strDateFormat = ft.format(calendar.getTime());
+                    String strDateFormat = turnDate2String(calendar.getTime());
                     String[] dataArr = strDateFormat.split(" ");
                     tv_startdate.setText(dataArr[0]);
                 }
@@ -207,7 +207,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
                     calendar.set(Calendar.SECOND, 0);
                     calendar.set(Calendar.MILLISECOND, 0);
 
-                    String strDateFormat = ft.format(calendar.getTime());
+                    String strDateFormat = turnDate2String(calendar.getTime());
                     String[] dataArr = strDateFormat.split(" ");
                     tv_alarmTime.setText(dataArr[1]);
                 }
@@ -269,127 +269,42 @@ public class NotificationDetailActivity extends AppCompatActivity{
             String no_title = et_title.getText().toString();
             String no_startdate = tv_startdate.getText().toString();
             String alarmTime = tv_alarmTime.getText().toString();
-            int no_frequency = sp_frequency.getSelectedItemPosition();
-            int no_duration = sp_duration.getSelectedItemPosition();
-            int no_active = (sw_isActive.isChecked())?1:0;
+            int tableFreqIndex = sp_frequency.getSelectedItemPosition();
+            int tableDurIndex = sp_duration.getSelectedItemPosition();
+            boolean isActive = sw_isActive.isChecked();
+            int no_active = (isActive)?1:0;
 
             //check Data
-            if(!checkData(no_title,no_startdate,alarmTime,no_frequency,no_duration))return;
+            if(!checkData(no_title,no_startdate,alarmTime,tableFreqIndex,tableDurIndex))return;
 
-            Bundle resultFreq = freqClassArr[no_frequency].getBundleResult();
-            Bundle resultDur = durClassArr[no_duration].getBundleResult();
+            Bundle resultFreq = freqClassArr[tableFreqIndex].getBundleResult();
+            Bundle resultDur = durClassArr[tableDurIndex].getBundleResult();
+            String cmdFreq =resultFreq.getString(CommonFragment.CMD);
+            String cmdDur =resultDur.getString(CommonFragment.CMD);
 
-            long currentAlarmTime;
-            String currentAlarmTimeFormat;
-            ArrayList<Long> currentAlarmTimeList = new ArrayList<>();
-            if(no_frequency==0){//FragmentFreqDay
-                currentAlarmTime = calendar.getTimeInMillis();
-                currentAlarmTimeList.add(currentAlarmTime);
-            }else if(no_frequency==1){//FragmentFreqTime
-                currentAlarmTime = calendar.getTimeInMillis();
-                currentAlarmTimeList.add(currentAlarmTime);
-                if(resultFreq.containsKey(FragmentFreqTime.FREQ_TIME_LIST)){
-                    ArrayList<String> newTimeList = resultFreq.getStringArrayList(FragmentFreqTime.FREQ_TIME_LIST);
-                    for(int i=0; i<newTimeList.size(); i++){
-                        HashMap data = turnStringToCalendar(newTimeList.get(i));
-                        currentAlarmTime = (long)data.get("MILLIS");
-                        currentAlarmTimeList.add(currentAlarmTime);
-                    }
-                }
-            }else if(no_frequency==2){//FragmentFreqHour
-                String prevDate = resultFreq.getString(FragmentFreqHour.FREQ_HOUR_PREVDATE);
-                String firstDate = resultFreq.getString(FragmentFreqHour.FREQ_HOUR_FIRSTDATE);
-                HashMap result;
-                if(prevDate!=null && prevDate!=""){
-                    result = turnStringToCalendar(prevDate);
-                    currentAlarmTime = (long)result.get("MILLIS");
-                    currentAlarmTimeList.add(currentAlarmTime);
-                }else if(firstDate!=null && firstDate!=""){
-                    result = turnStringToCalendar(firstDate);
-                    currentAlarmTime = (long)result.get("MILLIS");
-                    currentAlarmTimeList.add(currentAlarmTime);
-                }else{
-                    currentAlarmTime = calendar.getTimeInMillis();
-                    currentAlarmTimeList.add(currentAlarmTime);
-                }
-            }else if(no_frequency==3){//FragmentFreqWeeks
-                currentAlarmTime = calendar.getTimeInMillis();
-                int dayOfWeek;
-                for(int i=0; i<7; i++){
-                    dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-                    int freqActive = resultFreq.getInt("FREQ_WEEKS_WEEK"+dayOfWeek);
-                    if(freqActive==1){
-                        currentAlarmTime = currentAlarmTime+(0*AlarmReceiver.dayMillis);
-                        calendar.setTimeInMillis(currentAlarmTime);
-                        currentAlarmTimeList.add(currentAlarmTime);
-                    }
-                }
-            }else if(no_frequency==4){//FragmentFreqActivePause
+            //update z value
+            if(cmdFreq.equals(FragmentFreqActivePause.FREQ_ACTIVEPAUSE)){
                 int x = resultFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_X);
                 int y = resultFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Y);
-                int z = resultFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Z);
-                if(z<=x){//如果還在持續天數中
-                    currentAlarmTime = calendar.getTimeInMillis();
-                    currentAlarmTimeList.add(currentAlarmTime);
+                Date data = turnString2Date(no_startdate+" 00:00");
+                int z;
+                if(System.currentTimeMillis()>=data.getTime()){
+                    z = (int)Math.ceil((System.currentTimeMillis() - data.getTime())/AlarmReceiver.dayMillis);
+                    z = z%(x+y);
+                    z++;
                 }else{
-                    currentAlarmTime = calendar.getTimeInMillis() + (y+1)*AlarmReceiver.dayMillis;
-                    currentAlarmTimeList.add(currentAlarmTime);
+                    z=0;
                 }
+                resultFreq.putInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Z, z);
             }
 
             ArrayList<Integer> alarmIdArr;
             if(statusCode==0){
                 //DB
-                notificationDB.setDBNotification_Create(no_title,no_startdate,no_frequency,no_duration,no_active);
+                notificationDB.setDBNotification_Create(no_title,no_startdate,tableFreqIndex,tableDurIndex,no_active);
                 _ID = notificationDB.getDBNotificationID_Last();
-                notificationDB.setDBFrequency_Create(_ID,no_frequency,resultFreq);
-                notificationDB.setDBDuration_Create(_ID,no_duration,resultDur);
-
-                //設定no_freq_time的所有新增多時間點
-                if(no_frequency==1){
-                    for(int i=0; i<currentAlarmTimeList.size(); i++){
-                        currentAlarmTime = currentAlarmTimeList.get(i);
-                        calendar.setTimeInMillis(currentAlarmTime);
-                        calendar.set(Calendar.YEAR, 1911);
-                        calendar.set(Calendar.MONTH, 1);
-                        calendar.set(Calendar.DAY_OF_MONTH, 1);
-                        currentAlarmTimeFormat = ft.format(calendar.getTime());
-                        notificationDB.setDBAlarm_Create(_ID,currentAlarmTimeFormat);
-                    }
-                }
-
-                //設置新的時間點活動
-                if(no_active==1){
-                    for(int i=0; i<currentAlarmTimeList.size(); i++){
-                        currentAlarmTime = currentAlarmTimeList.get(i);
-                        calendar.setTimeInMillis(currentAlarmTime);
-                        currentAlarmTimeFormat = ft.format(calendar.getTime());
-                        Date currentDate = calendar.getTime();
-                        if(no_duration==0){
-                            String endDateStr = resultDur.getString(FragmentDurEnddate.DUR_ENDDATE_ENDDATE);
-                            HashMap hashMap = turnStringToCalendar(endDateStr);
-                            Date endDate = (Date)hashMap.get("DATE");
-                            if(currentDate.before(endDate)){ //todo
-
-                            }else{
-
-                            }
-
-                        }else if(no_duration==1){
-                            //resultDur.getInt(FragmentDurCont.DUR_CONT_X)
-                            System.out.println("----------dsfs-------------");
-                                    System.out.println(no_startdate +" " + alarmTime);
-                              //currentAlarmTime - start
-                        }
-
-                        notificationDB.setDBAlarm_Create(_ID,currentAlarmTimeFormat);
-                        alarmIdArr = notificationDB.getDBAlarmIdArrFromNoId(_ID);
-                        if(alarmIdArr!=null){
-                            int lastAlarmID = alarmIdArr.get(0);
-                            startAlarmReceiver(_ID,lastAlarmID,no_title,resultFreq,currentAlarmTime);
-                        }
-                    }
-                }
+                notificationDB.setDBFrequency_Create(_ID,tableFreqIndex,resultFreq);
+                notificationDB.setDBDuration_Create(_ID,tableDurIndex,resultDur);
             }else if(statusCode==1){
                 //清除所有時間點活動
                 alarmIdArr = notificationDB.getDBAlarmIdArrFromNoId(_ID);//取得所有alarmID值
@@ -400,46 +315,59 @@ public class NotificationDetailActivity extends AppCompatActivity{
                 }
 
                 //DB
-                notificationDB.setDBNotification_Update(_ID,no_title,no_startdate,no_frequency,no_duration,no_active);//todo 確認_ID的值是否會正確
-                if(notificationDB.checkHasFrequency(_ID,no_frequency)){
-                    notificationDB.setDBFrequency_Update(_ID,no_frequency,resultFreq);
+                notificationDB.setDBNotification_Update(_ID,no_title,no_startdate,tableFreqIndex,tableDurIndex,no_active);//todo 確認_ID的值是否會正確
+                if(notificationDB.checkHasFrequency(_ID,tableFreqIndex)){
+                    notificationDB.setDBFrequency_Update(_ID,tableFreqIndex,resultFreq);
                 }else{
-                    notificationDB.setDBFrequency_Create(_ID,no_frequency,resultFreq);
+                    notificationDB.setDBFrequency_Create(_ID,tableFreqIndex,resultFreq);
                 }
-                if(notificationDB.checkHasDuration(_ID,no_duration)){
-                    notificationDB.setDBDuration_Update(_ID,no_duration,resultDur);
+                if(notificationDB.checkHasDuration(_ID,tableDurIndex)){
+                    notificationDB.setDBDuration_Update(_ID,tableDurIndex,resultDur);
                 }else{
-                    notificationDB.setDBDuration_Create(_ID,no_duration,resultDur);
+                    notificationDB.setDBDuration_Create(_ID,tableDurIndex,resultDur);
                 }
                 notificationDB.setDBAlarm_DeleteFromNoId(_ID);
+            }
+            Date startDate = turnString2Date(no_startdate+" "+alarmTime);
+            calendar.setTime(startDate);
+            ArrayList<Long> currentAlarmTimeList = getTotalAlarmTimeInFreq(no_startdate,resultFreq, calendar.getTimeInMillis());
 
-                //設定no_freq_time的所有新增多時間點
-                if(no_frequency==1){
-                    for(int i=0; i<currentAlarmTimeList.size(); i++){
-                        currentAlarmTime = currentAlarmTimeList.get(i);
-                        calendar.setTimeInMillis(currentAlarmTime);
-                        calendar.set(Calendar.YEAR, 1911);
-                        calendar.set(Calendar.MONTH, 1);
-                        calendar.set(Calendar.DAY_OF_MONTH, 1);
-                        currentAlarmTimeFormat = ft.format(calendar.getTime());
-                        notificationDB.setDBAlarm_Create(_ID,currentAlarmTimeFormat);
-                    }
-                }
-
-                //設置新的時間點活動
-                if(no_active==1){
-                    for(int i=0; i<currentAlarmTimeList.size(); i++) {
-                        currentAlarmTime = currentAlarmTimeList.get(i);
-                        calendar.setTimeInMillis(currentAlarmTime);
-                        currentAlarmTimeFormat = ft.format(calendar.getTime());
-
-                        notificationDB.setDBAlarm_Create(_ID, currentAlarmTimeFormat);
-                        alarmIdArr = notificationDB.getDBAlarmIdArrFromNoId(_ID);//重取新的alarmID值
-                        startAlarmReceiver(_ID, alarmIdArr.get(0), no_title, resultFreq, currentAlarmTime);
-                    }
+            long currentAlarmTime;
+            String currentAlarmTimeFormat;
+            //設定no_freq_time的所有新增多時間點
+            if(cmdFreq.equals(FragmentFreqTime.FREQ_TIME)){
+                for(int i=0; i<currentAlarmTimeList.size(); i++){
+                    currentAlarmTime = currentAlarmTimeList.get(i);
+                    calendar.setTimeInMillis(currentAlarmTime);
+                    calendar.set(Calendar.YEAR, 1911);
+                    calendar.set(Calendar.MONTH, 1);
+                    calendar.set(Calendar.DAY_OF_MONTH, 1);
+                    currentAlarmTimeFormat= turnDate2String(calendar.getTime());
+                    notificationDB.setDBAlarm_Create(_ID,currentAlarmTimeFormat);
                 }
             }
 
+            //設置新的時間點活動
+            if(isActive){
+                Date newAlarmDate;
+                boolean isPassDur;
+                for(int i=0; i<currentAlarmTimeList.size(); i++) {
+                    currentAlarmTime = currentAlarmTimeList.get(i);
+                    calendar.setTimeInMillis(currentAlarmTime);
+                    currentAlarmTimeFormat= turnDate2String(calendar.getTime());
+                    newAlarmDate = calendar.getTime();
+                    startDate = turnString2Date(no_startdate+" 23:59");
+                    isPassDur = checkInDuration(resultDur,startDate,newAlarmDate);
+                    if(isPassDur){
+                        notificationDB.setDBAlarm_Create(_ID, currentAlarmTimeFormat);
+                        alarmIdArr = notificationDB.getDBAlarmIdArrFromNoId(_ID);//重取新的alarmID值
+                        if(alarmIdArr!=null){
+                            int lastAlarmID = alarmIdArr.get(0);
+                            startAlarmReceiver(_ID, lastAlarmID, no_title, resultFreq, resultDur, no_startdate, currentAlarmTime);
+                        }
+                    }
+                }
+            }
             goBackActivity();
         }
     };
@@ -474,42 +402,11 @@ public class NotificationDetailActivity extends AppCompatActivity{
         }
     };
 
-//    private String format(int time){
-//        String str = ""+time;
-//        if(str.length() == 1){
-//            str = "0"+str;
-//        }
-//        return str;
-//    }
-
     private void goBackActivity(){
         finish();
     }
 
     //Util-------------------------------
-    public HashMap turnStringToCalendar(String strDate/*"2019:12:12 07:12"*/){
-        Date date;
-        HashMap result;
-        try {
-            date = this.ft.parse(strDate);
-            this.calendar.setTime(date);
-            result = new HashMap();
-            result.put("YEAR",this.calendar.get(Calendar.YEAR));
-            result.put("MONTH",this.calendar.get(Calendar.MONTH)); //注意月份會少1 index=0~11
-            result.put("DAY",this.calendar.get(Calendar.DAY_OF_MONTH));
-            result.put("HOUR",this.calendar.get(Calendar.HOUR_OF_DAY));
-            result.put("MINUTE",this.calendar.get(Calendar.MINUTE));
-//            result.put("SECOND",this.calendar.get(Calendar.SECOND));
-            result.put("MILLIS",this.calendar.getTimeInMillis());
-            result.put("DB_ALARM_TIME",this.ft.format(date));
-            result.put("DATE",date);
-            return result;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     private boolean checkData(String no_title,String no_startdate,String alarmTime,int freqIndex,int durIndex){
         String checkMessage;
         if(no_title.equals("")){
@@ -538,12 +435,14 @@ public class NotificationDetailActivity extends AppCompatActivity{
         return true;
     }
 
-
     //設置鬧鐘，到點做事
-    private void startAlarmReceiver(int noId, int lastAlarmID,String no_title,Bundle resultFreq,long currentAlarmTime){
+    private void startAlarmReceiver(int noId, int lastAlarmID,String no_title,Bundle resultFreq,Bundle resultDur,String startDateStr,long currentAlarmTime){
+        System.out.println("NOtificationDetailActivity startAlarmReceiver===>"+noId+" "+lastAlarmID+" "+new Date(currentAlarmTime));
         Intent intent = new Intent(NotificationDetailActivity.this, AlarmReceiver.class);
         intent.putExtra("TITLE", no_title);
         intent.putExtra("FREQ_BUNDLE", resultFreq);
+        intent.putExtra("DUR_BUNDLE", resultDur);
+        intent.putExtra("START_DATE", startDateStr);
         intent.putExtra("CURRENT_ALARM_TIME", currentAlarmTime);
         intent.putExtra("REQUEST_CODE",lastAlarmID);
         intent.putExtra("NOID",noId);
@@ -560,14 +459,119 @@ public class NotificationDetailActivity extends AppCompatActivity{
         alarmManager.cancel(pendingIntent);
     }
 
+    /**
+     * 依頻率取得所有提醒時間點
+     * @param resultFreq
+     * @param currentTimeInMillis
+     * @return
+     */
+    private ArrayList<Long> getTotalAlarmTimeInFreq(String no_startdate,Bundle resultFreq, long currentTimeInMillis){
+        ArrayList<Long> currentAlarmTimeList = new ArrayList<>();
+        String cmdFreq = resultFreq.getString(CommonFragment.CMD);
+        long currentAlarmTime;
+        switch (cmdFreq){
+            case FragmentFreqDay.FREQ_DAY:
+                currentAlarmTime = currentTimeInMillis;
+                currentAlarmTimeList.add(currentAlarmTime);
+                break;
+            case FragmentFreqTime.FREQ_TIME:
+                if(resultFreq.containsKey(FragmentFreqTime.FREQ_TIME_LIST)){
+                    ArrayList<String> newTimeList = resultFreq.getStringArrayList(FragmentFreqTime.FREQ_TIME_LIST);
+                    Date date;
+                    for(int i=0; i<newTimeList.size(); i++){
+                        date = turnString2Date(no_startdate+" "+newTimeList.get(i));
+                        currentAlarmTime = date.getTime();
+                        currentAlarmTimeList.add(currentAlarmTime);
+                    }
+                }
+                currentAlarmTime = currentTimeInMillis;
+                currentAlarmTimeList.add(currentAlarmTime);
+                break;
+            case FragmentFreqHour.FREQ_HOUR:
+//                String prevDate = resultFreq.getString(FragmentFreqHour.FREQ_HOUR_PREVDATE);
+//                String firstDate = resultFreq.getString(FragmentFreqHour.FREQ_HOUR_FIRSTDATE);
+//                Date date;
+//                if(prevDate!=null && prevDate!=""){
+//                    date = turnString2Date(prevDate);
+//                    currentAlarmTime = date.getTime();
+//                }else if(firstDate!=null && firstDate!=""){
+//                    date = turnString2Date(firstDate);
+//                    currentAlarmTime = date.getTime();
+//                }else{
+                    currentAlarmTime = currentTimeInMillis;
+//                }
+                currentAlarmTimeList.add(currentAlarmTime);
+                break;
+            case FragmentFreqWeeks.FREQ_WEEKS:
+                int dayOfWeek;
+                boolean isActive;
+                for(int i=0; i<7; i++){
+                    currentAlarmTime = currentTimeInMillis;
+                    currentAlarmTime = currentAlarmTime + (i*AlarmReceiver.dayMillis);
+                    this.calendar.setTimeInMillis(currentAlarmTime);
+                    dayOfWeek = this.calendar.get(Calendar.DAY_OF_WEEK);//dayOfWeek [星期日=1，星期一=2，星期二=3，星期三=4，星期四=5，星期五=6，星期六=7]
+                    isActive = (resultFreq.getInt("FREQ_WEEKS_WEEK"+dayOfWeek)==1)?true:false;
+                    if(isActive){
+                        currentAlarmTimeList.add(currentAlarmTime);
+                    }
+                }
+                break;
+            case FragmentFreqActivePause.FREQ_ACTIVEPAUSE:
+                int x = resultFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_X);
+                int y = resultFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Y);
+                int z = resultFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Z);
+                currentAlarmTime = currentTimeInMillis;
+                if(!(z<=x)){//如果不在持續天數中，則計算暫停天數之後的新時間
+                    currentAlarmTime += (y+1)*AlarmReceiver.dayMillis;
+                }
+                currentAlarmTimeList.add(currentAlarmTime);
+                break;
+        }
+        return currentAlarmTimeList;
+    }
 
-//    private void showAlarmTimeGroup(){
-//        this.alarmTimeGroup.setVisibility(View.VISIBLE);
-//    }
-//
-//    private void hideAlarmTimeGroup(){
-//        this.alarmTimeGroup.setVisibility(View.GONE);
-//    }
+    /**
+     * 判斷是否符合週期範圍
+     */
+    private boolean checkInDuration(Bundle resultDur, Date startDate, Date newAlarmDate) {
+        String cmd = resultDur.getString(CommonFragment.CMD);
+        Date durDate;
+        durDate = new Date();
+        switch (cmd) {
+            case FragmentDurEnddate.DUR_ENDDATE:
+                String endDAte = resultDur.getString(FragmentDurEnddate.DUR_ENDDATE_ENDDATE);
+                endDAte += " 23:59";
+                durDate = this.turnString2Date(endDAte);
+                break;
+            case FragmentDurCont.DUR_CONT:
+                int x = resultDur.getInt(FragmentDurCont.DUR_CONT_X);
+                durDate.setTime(startDate.getTime() + (x * AlarmReceiver.dayMillis));
+                break;
+        }
+        if (newAlarmDate.before(durDate)) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkAfterStartDate(Date startDate, Date newAlarmDate){
+        return newAlarmDate.after(startDate);
+    }
+
+    private Date turnString2Date(String dateStr){
+        Date date;
+        try {
+            date= this.ft.parse(dateStr);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String turnDate2String(Date date){
+        return this.ft.format(date);
+    }
 
     //set get----------
     public static Context getContext() {

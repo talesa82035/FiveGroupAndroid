@@ -88,21 +88,20 @@ public class NotificationDB {
     }
 
     public void setDBFrequency_Create(int noId, int tableFreqIndex, Bundle bundleFreq) {
-        System.out.println("setDBFrequency_Create----------------------");
         ContentValues cvFreq = new ContentValues();
         switch (bundleFreq.getString(CommonFragment.CMD)) {
-            case "FREQ_DAY":
+            case FragmentFreqDay.FREQ_DAY:
                 cvFreq.put("no_xdays", bundleFreq.getInt(FragmentFreqDay.FREQ_DAY_X));
                 break;
-            case "FREQ_TIME":
+            case FragmentFreqTime.FREQ_TIME:
 //                cvFreq.put("no_daily_xtimes", bundleFreq.getInt(FragmentFreqTime.FREQ_TIME_X));
                 break;
-            case "FREQ_HOUR":
+            case FragmentFreqHour.FREQ_HOUR:
                 cvFreq.put("no_sethour", bundleFreq.getInt(FragmentFreqHour.FREQ_HOUR_X));
-                cvFreq.put("no_freq_starttime", bundleFreq.getString(FragmentFreqHour.FREQ_HOUR_FIRSTDATE));
+                cvFreq.put("no_freq_starttime", bundleFreq.getString(FragmentFreqHour.FREQ_HOUR_FIRSTDATE));//todo check空值怎麼存
                 cvFreq.put("no_freq_lasttime", bundleFreq.getString(FragmentFreqHour.FREQ_HOUR_PREVDATE));
                 break;
-            case "FREQ_WEEKS":
+            case FragmentFreqWeeks.FREQ_WEEKS:
                 cvFreq.put("no_mon", bundleFreq.getInt(FragmentFreqWeeks.FREQ_WEEKS_WEEK1));
                 cvFreq.put("no_tue", bundleFreq.getInt(FragmentFreqWeeks.FREQ_WEEKS_WEEK2));
                 cvFreq.put("no_wed", bundleFreq.getInt(FragmentFreqWeeks.FREQ_WEEKS_WEEK3));
@@ -111,12 +110,7 @@ public class NotificationDB {
                 cvFreq.put("no_sat", bundleFreq.getInt(FragmentFreqWeeks.FREQ_WEEKS_WEEK6));
                 cvFreq.put("no_sun", bundleFreq.getInt(FragmentFreqWeeks.FREQ_WEEKS_WEEK7));
                 break;
-            case "FREQ_ACTIVEPAUSE":
-                System.out.println("dfdsfdsfs----------------------");
-                System.out.println(tableFreqIndex);
-                System.out.println(bundleFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_X));
-                System.out.println(bundleFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Y));
-                System.out.println(bundleFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Z));
+            case FragmentFreqActivePause.FREQ_ACTIVEPAUSE:
                 cvFreq.put("no_freq_active", bundleFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_X));
                 cvFreq.put("no_freq_pause", bundleFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Y));
                 cvFreq.put("no_cycle_xdays", bundleFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Z));
@@ -129,18 +123,18 @@ public class NotificationDB {
     public void setDBFrequency_Update(int noId, int tableFreqIndex, Bundle bundleFreq) {
         ContentValues cvFreq = new ContentValues();
         switch (bundleFreq.getString(CommonFragment.CMD)) {
-            case "FREQ_DAY":
+            case FragmentFreqDay.FREQ_DAY:
                 cvFreq.put("no_xdays", bundleFreq.getInt(FragmentFreqDay.FREQ_DAY_X));
                 break;
-            case "FREQ_TIME":
+            case FragmentFreqTime.FREQ_TIME:
 //                cvFreq.put("no_daily_xtimes", bundleFreq.getInt(FragmentFreqTime.FREQ_TIME_X));
                 break;
-            case "FREQ_HOUR":
+            case FragmentFreqHour.FREQ_HOUR:
                 cvFreq.put("no_sethour", bundleFreq.getInt(FragmentFreqHour.FREQ_HOUR_X));
                 cvFreq.put("no_freq_starttime", bundleFreq.getString(FragmentFreqHour.FREQ_HOUR_FIRSTDATE));
                 cvFreq.put("no_freq_lasttime", bundleFreq.getString(FragmentFreqHour.FREQ_HOUR_PREVDATE));
                 break;
-            case "FREQ_WEEKS":
+            case FragmentFreqWeeks.FREQ_WEEKS:
                 cvFreq.put("no_mon", bundleFreq.getInt(FragmentFreqWeeks.FREQ_WEEKS_WEEK1));
                 cvFreq.put("no_tue", bundleFreq.getInt(FragmentFreqWeeks.FREQ_WEEKS_WEEK2));
                 cvFreq.put("no_wed", bundleFreq.getInt(FragmentFreqWeeks.FREQ_WEEKS_WEEK3));
@@ -149,13 +143,7 @@ public class NotificationDB {
                 cvFreq.put("no_sat", bundleFreq.getInt(FragmentFreqWeeks.FREQ_WEEKS_WEEK6));
                 cvFreq.put("no_sun", bundleFreq.getInt(FragmentFreqWeeks.FREQ_WEEKS_WEEK7));
                 break;
-            case "FREQ_ACTIVEPAUSE":
-                System.out.println("dfdsfdsfs---------222222222222222222-------------");
-                System.out.println(tableFreqIndex);
-                System.out.println(noId);
-                System.out.println(bundleFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_X));
-                System.out.println(bundleFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Y));
-                System.out.println(bundleFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Z));
+            case FragmentFreqActivePause.FREQ_ACTIVEPAUSE:
                 cvFreq.put("no_freq_active", bundleFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_X));
                 cvFreq.put("no_freq_pause", bundleFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Y));
                 cvFreq.put("no_cycle_xdays", bundleFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Z));
@@ -229,7 +217,7 @@ public class NotificationDB {
         Date data;
         Date endDate;
         try {
-            endDate = this.ft.parse("1912/1/1"); //1911/1/1~1911/12/31
+            endDate = this.ft.parse("1912-01-01 00:00"); //1911-1-1~1911-12-31
             newAlarmTimeList = new ArrayList<>();
             alarmIdArrFromNoId = this.getDBAlarmIdArrFromNoId(noId);
             for(int i=0; i<alarmIdArrFromNoId.size(); i++){
@@ -262,10 +250,10 @@ public class NotificationDB {
     public void setDBDuration_Create(int noId, int tableDurIndex, Bundle bundleDur) {
         ContentValues cvDur = new ContentValues();
         switch (bundleDur.getString(CommonFragment.CMD)) {
-            case "DUR_ENDDATE":
+            case FragmentDurEnddate.DUR_ENDDATE:
                 cvDur.put("no_dur_enddate", bundleDur.getString(FragmentDurEnddate.DUR_ENDDATE_ENDDATE));
                 break;
-            case "DUR_CONT":
+            case FragmentDurCont.DUR_CONT:
                 cvDur.put("no_dur_day", bundleDur.getInt(FragmentDurCont.DUR_CONT_X));
                 break;
         }
@@ -276,10 +264,10 @@ public class NotificationDB {
     public void setDBDuration_Update(int noId, int tableDurIndex, Bundle bundleDur) {
         ContentValues cvDur = new ContentValues();
         switch (bundleDur.getString(CommonFragment.CMD)) {
-            case "DUR_ENDDATE":
+            case FragmentDurEnddate.DUR_ENDDATE:
                 cvDur.put("no_dur_enddate", bundleDur.getString(FragmentDurEnddate.DUR_ENDDATE_ENDDATE));
                 break;
-            case "DUR_CONT":
+            case FragmentDurCont.DUR_CONT:
                 cvDur.put("no_dur_day", bundleDur.getInt(FragmentDurCont.DUR_CONT_X));
                 break;
         }
