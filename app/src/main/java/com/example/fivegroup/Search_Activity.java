@@ -29,12 +29,14 @@ import java.util.ArrayList;
 public class Search_Activity extends AppCompatActivity {
 
     private Spinner spin1, spin2, spin3;
+    ArrayList<String> list_num = new ArrayList<>();
+    ArrayList<String> list_addr = new ArrayList<>();
     private Button btn1, btn2;
     private EditText et1, et2;
     private String location_url = "http://10.10.3.104/api/SchedulesAPI?";
     private String hospital_url = "http://10.10.3.104/api/HospitalsAPI?";
     private String dep_url = "http://10.10.3.104/api/SymptomDepartmentAPI?";
-    private String url1, url2, url3, str1, str_city, str3, str_dist, str_dep, str_hos, str_doc, cityname, hos_url;
+    private String url1, url2, url3, str1, str_city, str3, str_dist, str_dep, str_hos, str_doc, cityname, hos_url, num, addr;
 
 
     @Override
@@ -85,11 +87,11 @@ public class Search_Activity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-//                str_dist = spin2.getSelectedItem().toString();
-//                str_dep = spin3.getSelectedItem().toString();
+                str_dist = spin2.getSelectedItem().toString();
+                str_dep = spin3.getSelectedItem().toString();
 //                str_hos = et1.getText().toString();
 //                str_doc = et2.getText().toString();
-                hos_url = hospital_url + "city_name=高雄市&district_name=苓雅區&dep_name=牙科" +
+                hos_url = hospital_url + "city_name=" + str_city + "&district_name=" + str_dist + "&dep_name=" + str_dep +
                         "&hos_name&doc_name&hos_eng_name&date";
 
                 getResult(hos_url);
@@ -252,12 +254,18 @@ public class Search_Activity extends AppCompatActivity {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject o = jsonArray.getJSONObject(i);
             hospital = o.getString("hos_name");
+            num = o.getString("hos_phone");
+            addr = o.getString("city_name") + o.getString("district_name") + o.getString("hos_address");
 
             list.add(hospital);
+            list_num.add(num);
+            list_addr.add(addr);
 
             Intent intent = new Intent(Search_Activity.this, Searchdetail_Activity.class);
             Bundle bundle = new Bundle();
             bundle.putStringArrayList("result",list);
+            bundle.putStringArrayList("num",list_num);
+            bundle.putStringArrayList("addr",list_addr);
             intent.putExtras(bundle);
             startActivity(intent);
         }

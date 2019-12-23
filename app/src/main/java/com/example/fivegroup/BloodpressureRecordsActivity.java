@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -56,27 +57,77 @@ public class BloodpressureRecordsActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             ContentValues cv = new ContentValues();
-            if (Bloodpressurerecord_day_hight.getText() != null)
+            if (Bloodpressurerecord_day_hight.getText().toString().matches(""))
+            {
+                bp_d_h = 0;
+            }
+            else {
                 bp_d_h = Integer.valueOf(Bloodpressurerecord_day_hight.getText().toString());
-            if (Bloodpressurerecord_day_low.getText() != null)
-                bp_d_l = Integer.valueOf(Bloodpressurerecord_day_low.getText().toString());
-            if (Bloodpressurerecord_day_pulse.getText() != null)
-                bp_d_p = Integer.valueOf(Bloodpressurerecord_day_pulse.getText().toString());
-            if (Bloodpressurerecord_noon_hight.getText() != null)
-                bp_n_h = Integer.valueOf(Bloodpressurerecord_noon_hight.getText().toString());
-            if (Bloodpressurerecord_noon_low.getText() != null)
-                bp_n_l = Integer.valueOf(Bloodpressurerecord_noon_low.getText().toString());
-            if (Bloodpressurerecord_noon_pulse.getText() != null)
-                bp_n_p = Integer.valueOf(Bloodpressurerecord_noon_pulse.getText().toString());
-            if (Bloodpressurerecord_night_hight.getText() != null)
-                bp_night_h = Integer.valueOf(Bloodpressurerecord_night_hight.getText().toString());
-            if (Bloodpressurerecord_night_low.getText() != null)
-                bp_night_l = Integer.valueOf(Bloodpressurerecord_night_low.getText().toString());
-            if (Bloodpressurerecord_night_pulse.getText() != null)
-                bp_night_p = Integer.valueOf(Bloodpressurerecord_night_pulse.getText().toString());
+            }
 
-            if (Bloodpressurerecord_note.getText() != null)
-                bloodpressure_no = Bloodpressurerecord_note.getText().toString();
+            if (Bloodpressurerecord_day_low.getText().toString().matches(""))
+            {
+                bp_d_l = 0;
+            }
+            else {
+                bp_d_l = Integer.valueOf(Bloodpressurerecord_day_low.getText().toString());
+            }
+            if (Bloodpressurerecord_day_pulse.getText().toString().matches(""))
+            {
+                bp_d_p = 0;
+            }
+            else {
+                bp_d_p = Integer.valueOf(Bloodpressurerecord_day_pulse.getText().toString());
+            }
+
+            if (Bloodpressurerecord_noon_hight.getText().toString().matches(""))
+            {
+                bp_n_h = 0;
+            }
+            else {
+                bp_n_h = Integer.valueOf(Bloodpressurerecord_noon_hight.getText().toString());
+            }
+
+            if (Bloodpressurerecord_noon_low.getText().toString().matches(""))
+            {
+                bp_n_l = 0;
+            }
+            else {
+                bp_n_l = Integer.valueOf(Bloodpressurerecord_noon_low.getText().toString());
+            }
+
+            if (Bloodpressurerecord_noon_pulse.getText().toString().matches(""))
+            {
+                bp_n_p = 0;
+            }
+            else {
+                bp_n_p = Integer.valueOf(Bloodpressurerecord_noon_pulse.getText().toString());
+            }
+
+            if (Bloodpressurerecord_night_hight.getText().toString().matches(""))
+            {
+                bp_night_h = 0;
+            }
+            else {
+                bp_night_h = Integer.valueOf(Bloodpressurerecord_night_hight.getText().toString());
+            }
+
+            if (Bloodpressurerecord_night_low.getText().toString().matches(""))
+            {
+                bp_night_l = 0;
+            }
+            else {
+                bp_night_l = Integer.valueOf(Bloodpressurerecord_night_low.getText().toString());
+            }
+
+            if (Bloodpressurerecord_night_pulse.getText().toString().matches(""))
+            {
+                bp_night_p = 0;
+            }
+            else {
+                bp_night_p = Integer.valueOf(Bloodpressurerecord_night_pulse.getText().toString());
+            }
+
             cv.put("date", date);
             cv.put("day_hight", bp_d_h);
             cv.put("day_low", bp_d_l);
@@ -143,6 +194,16 @@ public class BloodpressureRecordsActivity extends AppCompatActivity {
         Bloodpressurerecord.setOnClickListener(new BloodpressurerecordListener());
         calendarView = findViewById(R.id.BloodpressurecalendarView);
         calendarView.setOnDateChangeListener(new CalendarChangeListener());
+
+        Bloodpressurerecord_day_hight.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        Bloodpressurerecord_day_low.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        Bloodpressurerecord_day_pulse.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        Bloodpressurerecord_noon_hight.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        Bloodpressurerecord_noon_low.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        Bloodpressurerecord_noon_pulse.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        Bloodpressurerecord_night_low.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        Bloodpressurerecord_night_hight.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        Bloodpressurerecord_night_pulse.setInputType(EditorInfo.TYPE_CLASS_PHONE);
     }
     private String getToday()
     {

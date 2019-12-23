@@ -45,7 +45,9 @@
                 <EditText
                     android:id="@+id/weightrecord_day"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789.">
+                </EditText>
 
             </LinearLayout>
 
@@ -63,7 +65,8 @@
                 <EditText
                     android:id="@+id/weightrecord_night"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789."></EditText>
             </LinearLayout>
 
             <LinearLayout

@@ -45,7 +45,8 @@
                 <EditText
                     android:id="@+id/Bloodpressurerecord_day_hight"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789"></EditText>
                 <TextView
                     android:id="@+id/BloodpressurerecordtextView02"
                     android:layout_width="wrap_content"
@@ -55,7 +56,8 @@
                 <EditText
                     android:id="@+id/Bloodpressurerecord_day_low"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789"></EditText>
                 <TextView
                     android:id="@+id/BloodpressurerecordtextView03"
                     android:layout_width="wrap_content"
@@ -65,7 +67,8 @@
                 <EditText
                     android:id="@+id/Bloodpressurerecord_day_pulse"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789"></EditText>
 
             </LinearLayout>
 
@@ -83,7 +86,8 @@
                 <EditText
                     android:id="@+id/Bloodpressurerecord_noon_hight"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789"></EditText>
                 <TextView
                     android:id="@+id/BloodpressurerecordtextView05"
                     android:layout_width="wrap_content"
@@ -93,7 +97,8 @@
                 <EditText
                     android:id="@+id/Bloodpressurerecord_noon_low"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789"></EditText>
                 <TextView
                     android:id="@+id/BloodpressurerecordtextView06"
                     android:layout_width="wrap_content"
@@ -103,7 +108,8 @@
                 <EditText
                     android:id="@+id/Bloodpressurerecord_noon_pulse"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789"></EditText>
 
             </LinearLayout>
 
@@ -121,7 +127,8 @@
                 <EditText
                     android:id="@+id/Bloodpressurerecord_night_low"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789"></EditText>
                 <TextView
                     android:id="@+id/BloodpressurerecordtextView08"
                     android:layout_width="wrap_content"
@@ -131,7 +138,8 @@
                 <EditText
                     android:id="@+id/Bloodpressurerecord_night_hight"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789"></EditText>
                 <TextView
                     android:id="@+id/BloodpressurerecordtextView09"
                     android:layout_width="wrap_content"
@@ -141,7 +149,8 @@
                 <EditText
                     android:id="@+id/Bloodpressurerecord_night_pulse"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789"></EditText>
 
             </LinearLayout>
 
