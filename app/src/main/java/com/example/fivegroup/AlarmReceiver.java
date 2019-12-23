@@ -67,6 +67,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         this.currentAlarmTime = intent.getLongExtra("CURRENT_ALARM_TIME",0);
         this.requestCode = intent.getIntExtra("REQUEST_CODE",0);
         this.noId = intent.getIntExtra("NOID",0);
+//        System.out.println("---AlarmReceiver--");
+//        Log.i("AA","---AlarmReceiver--");
+//        Log.d("AA","---AlarmReceiver--");
+        SingleToast.show(this.vContext,"123456789", Toast.LENGTH_LONG);
 
         //DB
         this.dbhelper = new DBhelper_Activity(this.vContext);
@@ -107,7 +111,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             case FragmentFreqActivePause.FREQ_ACTIVEPAUSE:
                 int x = this.freqBundle.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_X);
                 int y = this.freqBundle.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Y);
-                Date data = turnString2Date(this.startDateStr);
+                Date data = turnString2Date(this.startDateStr+" 00:00");
                 int z;
                 if(System.currentTimeMillis()>=data.getTime()){
                     z = (int)Math.ceil((System.currentTimeMillis() - data.getTime())/AlarmReceiver.dayMillis);
@@ -129,8 +133,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             long calcNextTime = this.calcNextTime(this.currentAlarmTime,this.freqBundle);
             String nextAlarmTimeFormat = this.ft.format(calcNextTime);
 
-            this.startDateStr += " 23:59";
-            Date startTimeDate = this.turnString2Date(this.startDateStr);
+            Date startTimeDate = this.turnString2Date(this.startDateStr+" 23:59");
             boolean isPassDur = checkInDuration(this.durBundle, startTimeDate,new Date(calcNextTime));
             if(isPassDur){
                 notificationDB.setDBAlarm_Create(this.noId,nextAlarmTimeFormat);
@@ -211,7 +214,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                 break;
         }
         return currentAlarmTime + calcMillis;
-//        return currentAlarmTime + (30*1000);//todo
     }
 
     public void startNextAlarmReceiver(int noId, int lastAlarmID,String title,Bundle freqBundle, Bundle durBundle, String startDateStr,long calcNextTime){

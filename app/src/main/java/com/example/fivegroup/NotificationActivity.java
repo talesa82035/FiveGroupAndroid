@@ -53,31 +53,6 @@ public class NotificationActivity extends AppCompatActivity {
         cursor.close();
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        System.out.println("--NotificationActivity onResume--");
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        System.out.println("--NotificationActivity onPause--");
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        System.out.println("--NotificationActivity onStop--");
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        System.out.println("--NotificationActivity onDestroy--");
-//    }
-
-
     private class addAlarmClickHandler implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -136,7 +111,8 @@ public class NotificationActivity extends AppCompatActivity {
             dbResultList.add(dataMap);
 
             int cursorIndex = cursor.getPosition();
-            notificationHomeStr[cursorIndex] = "標題:"+no_title+" 開始日期:"+no_startdate+" 是否啟用:"+no_active;
+            boolean isActive = (no_active==1)?true:false;
+            notificationHomeStr[cursorIndex] = "標題:"+no_title+" 開始日期:"+no_startdate+" 是否啟用:"+isActive;
 //            System.out.println(_ID);
 //            System.out.println(no_title);
 //            System.out.println(no_startdate);

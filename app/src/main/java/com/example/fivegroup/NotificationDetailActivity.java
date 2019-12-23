@@ -38,7 +38,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 
 public class NotificationDetailActivity extends AppCompatActivity{
@@ -81,7 +80,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
         this.dbhelper = new DBhelper_Activity(this);
         this.db = this.dbhelper.getWritableDatabase();
         this.notificationDB = new NotificationDB(this.db);
-        System.out.println("--NotificationDetailActivity--");
+
 //        this.notificationDB.clearTotalNotificationData();
 
         //init View
@@ -315,7 +314,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
                 }
 
                 //DB
-                notificationDB.setDBNotification_Update(_ID,no_title,no_startdate,tableFreqIndex,tableDurIndex,no_active);//todo 確認_ID的值是否會正確
+                notificationDB.setDBNotification_Update(_ID,no_title,no_startdate,tableFreqIndex,tableDurIndex,no_active);
                 if(notificationDB.checkHasFrequency(_ID,tableFreqIndex)){
                     notificationDB.setDBFrequency_Update(_ID,tableFreqIndex,resultFreq);
                 }else{
@@ -353,6 +352,9 @@ public class NotificationDetailActivity extends AppCompatActivity{
                 boolean isPassDur;
                 for(int i=0; i<currentAlarmTimeList.size(); i++) {
                     currentAlarmTime = currentAlarmTimeList.get(i);
+                    while(currentAlarmTime<System.currentTimeMillis()){//如果時間點已超過，則不重新響鈴，直到找到符合頻率的下一個時間點為止
+                        currentAlarmTime = calcNextTime(currentAlarmTime,resultFreq);
+                    }
                     calendar.setTimeInMillis(currentAlarmTime);
                     currentAlarmTimeFormat= turnDate2String(calendar.getTime());
                     newAlarmDate = calendar.getTime();
@@ -488,18 +490,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
                 currentAlarmTimeList.add(currentAlarmTime);
                 break;
             case FragmentFreqHour.FREQ_HOUR:
-//                String prevDate = resultFreq.getString(FragmentFreqHour.FREQ_HOUR_PREVDATE);
-//                String firstDate = resultFreq.getString(FragmentFreqHour.FREQ_HOUR_FIRSTDATE);
-//                Date date;
-//                if(prevDate!=null && prevDate!=""){
-//                    date = turnString2Date(prevDate);
-//                    currentAlarmTime = date.getTime();
-//                }else if(firstDate!=null && firstDate!=""){
-//                    date = turnString2Date(firstDate);
-//                    currentAlarmTime = date.getTime();
-//                }else{
-                    currentAlarmTime = currentTimeInMillis;
-//                }
+                currentAlarmTime = currentTimeInMillis;
                 currentAlarmTimeList.add(currentAlarmTime);
                 break;
             case FragmentFreqWeeks.FREQ_WEEKS:
@@ -554,10 +545,6 @@ public class NotificationDetailActivity extends AppCompatActivity{
         return false;
     }
 
-    private boolean checkAfterStartDate(Date startDate, Date newAlarmDate){
-        return newAlarmDate.after(startDate);
-    }
-
     private Date turnString2Date(String dateStr){
         Date date;
         try {
@@ -571,6 +558,40 @@ public class NotificationDetailActivity extends AppCompatActivity{
 
     private String turnDate2String(Date date){
         return this.ft.format(date);
+    }
+
+    public long calcNextTime(long currentAlarmTime, Bundle bundleData){
+        String cmd = (String)bundleData.get(CommonFragment.CMD);
+        long calcMillis=0;
+        switch (cmd){
+            case FragmentFreqDay.FREQ_DAY:
+                int everyXDays = bundleData.getInt(FragmentFreqDay.FREQ_DAY_X);
+                calcMillis = everyXDays*AlarmReceiver.dayMillis;
+                break;
+            case FragmentFreqTime.FREQ_TIME:
+                calcMillis = AlarmReceiver.dayMillis;
+                break;
+            case FragmentFreqHour.FREQ_HOUR:
+                int spaceHour = bundleData.getInt(FragmentFreqHour.FREQ_HOUR_X);
+                calcMillis = spaceHour*AlarmReceiver.hourMillis;
+                break;
+            case FragmentFreqWeeks.FREQ_WEEKS:
+                calcMillis = 7*AlarmReceiver.dayMillis;
+                break;
+            case FragmentFreqActivePause.FREQ_ACTIVEPAUSE:
+                int x = bundleData.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_X);
+                int y = bundleData.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Y);
+                int z = bundleData.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Z);
+                z=z+1;//循環第幾天
+                if(z>(x+y))z=1;
+                if(z<=x){//如果還在持續天數中
+                    calcMillis = AlarmReceiver.dayMillis;
+                }else{
+                    calcMillis = (y+1)*AlarmReceiver.dayMillis;
+                }
+                break;
+        }
+        return currentAlarmTime + calcMillis;
     }
 
     //set get----------
