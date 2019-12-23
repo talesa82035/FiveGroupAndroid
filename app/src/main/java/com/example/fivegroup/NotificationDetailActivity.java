@@ -33,16 +33,13 @@ import com.example.fivegroup.Fragment.FragmentFreqDay;
 import com.example.fivegroup.Fragment.FragmentFreqHour;
 import com.example.fivegroup.Fragment.FragmentFreqTime;
 import com.example.fivegroup.Fragment.FragmentFreqWeeks;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 
 public class NotificationDetailActivity extends AppCompatActivity{
-    private static Context CONTEXT;
+    private Context context;
 
     //DB
     private DBhelper_Activity dbhelper;
@@ -64,24 +61,25 @@ public class NotificationDetailActivity extends AppCompatActivity{
     private Button btn_delete;
 
     //Data
-    private SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private Calendar calendar=Calendar.getInstance();//System.out.println(this.calendar.get(Calendar.DAY_OF_WEEK));//6 [星期日=1，星期一=2，星期二=3，星期三=4，星期四=5，星期五=6，星期六=7]
     private int _ID;//提醒流水號
     private int statusCode=0;//0=insert;1=update;2=delete
     private CommonFragment[] freqClassArr= new CommonFragment[]{new FragmentFreqDay(), new FragmentFreqTime(),new FragmentFreqHour(), new FragmentFreqWeeks(), new FragmentFreqActivePause()};
     private CommonFragment[] durClassArr= new CommonFragment[]{ new FragmentDurEnddate(), new FragmentDurCont()};
+    private CommonNotification commonNotification = new CommonNotification();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notificationdetail);
 
-        setContext(this);
+        this.context = this;
+
         //DB
         this.dbhelper = new DBhelper_Activity(this);
         this.db = this.dbhelper.getWritableDatabase();
         this.notificationDB = new NotificationDB(this.db);
-        System.out.println("--NotificationDetailActivity--");
+
 //        this.notificationDB.clearTotalNotificationData();
 
         //init View
@@ -157,17 +155,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
                 String[] dataArr = dateFormat.split(" ");
                 this.tv_alarmTime.setText(dataArr[1]);
             }
-//            //todo 查詢SQLite版本
-//            String sql = "SELECT sqlite_version()";
-//            Cursor c = db.rawQuery(sql,null);
-////            System.out.println("sqlite version=>");
-//            if(c.getCount()>0){
-//                c.moveToFirst();
-////                System.out.println(c.getString(0));//3.8.10.2
-//                c.close();
-//            }else{
-//                Log.w("Warn==>","NotificationDetailActivity.onStart()=> sqlite version is no data!!!");
-//            }
+//            this.notificationDB.getSQLiteVersion();
         }
     }
 
@@ -184,7 +172,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
                     calendar.set(Calendar.MONTH, month);
                     calendar.set(Calendar.DAY_OF_MONTH, day);
 
-                    String strDateFormat = turnDate2String(calendar.getTime());
+                    String strDateFormat = commonNotification.turnDate2String(calendar.getTime());
                     String[] dataArr = strDateFormat.split(" ");
                     tv_startdate.setText(dataArr[0]);
                 }
@@ -207,7 +195,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
                     calendar.set(Calendar.SECOND, 0);
                     calendar.set(Calendar.MILLISECOND, 0);
 
-                    String strDateFormat = turnDate2String(calendar.getTime());
+                    String strDateFormat = commonNotification.turnDate2String(calendar.getTime());
                     String[] dataArr = strDateFormat.split(" ");
                     tv_alarmTime.setText(dataArr[1]);
                 }
@@ -218,15 +206,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
     AdapterView.OnItemSelectedListener frequencySelectedHandler = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            //System.out.println(adapterView.getSelectedItem());
-//                    Fragment fragment = getSupportFragmentManager().findFragmentByTag("f_fragment_freq");
-//                    getSupportFragmentManager().beginTransaction()
-//                            .remove(fragment)
-//                            .commit();
             getSupportFragmentManager().beginTransaction()
-                    //.add(R.id.container, FragmentFreqDay.newInstance() , "f_fragment")
-                    //.add(R.id.fl_freq,  (CommonFragment)freqClassArr[i].getDeclaredMethod("newInstance", null/*方法需要的參數型態*/).invoke(null/*呼叫此方法的物件*/,null/*參數值*/), "f_fragment_freq")
-                    //.replace(R.id.fl_freq,  (CommonFragment)freqClassArr[i].getDeclaredMethod("newInstance").invoke(null/*呼叫此方法的物件*/,(Object[])null/*參數值*/), "f_fragment_freq")
                     .replace(R.id.fl_freq, freqClassArr[i], "f_fragment_freq")
                     .commit();
         }
@@ -240,7 +220,6 @@ public class NotificationDetailActivity extends AppCompatActivity{
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.fl_dur,  (CommonFragment)durClassArr[i].getDeclaredMethod("newInstance").invoke(null/*呼叫此方法的物件*/,(Object[])null/*參數值*/), "f_fragment_dur")
                     .replace(R.id.fl_dur, durClassArr[i], "f_fragment_dur")
                     .commit();
         }
@@ -283,18 +262,8 @@ public class NotificationDetailActivity extends AppCompatActivity{
             String cmdDur =resultDur.getString(CommonFragment.CMD);
 
             //update z value
-            if(cmdFreq.equals(FragmentFreqActivePause.FREQ_ACTIVEPAUSE)){
-                int x = resultFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_X);
-                int y = resultFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Y);
-                Date data = turnString2Date(no_startdate+" 00:00");
-                int z;
-                if(System.currentTimeMillis()>=data.getTime()){
-                    z = (int)Math.ceil((System.currentTimeMillis() - data.getTime())/AlarmReceiver.dayMillis);
-                    z = z%(x+y);
-                    z++;
-                }else{
-                    z=0;
-                }
+            int z = commonNotification.getFreqActivePauseZValue(resultFreq,no_startdate);
+            if(z!=-1){
                 resultFreq.putInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Z, z);
             }
 
@@ -315,7 +284,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
                 }
 
                 //DB
-                notificationDB.setDBNotification_Update(_ID,no_title,no_startdate,tableFreqIndex,tableDurIndex,no_active);//todo 確認_ID的值是否會正確
+                notificationDB.setDBNotification_Update(_ID,no_title,no_startdate,tableFreqIndex,tableDurIndex,no_active);
                 if(notificationDB.checkHasFrequency(_ID,tableFreqIndex)){
                     notificationDB.setDBFrequency_Update(_ID,tableFreqIndex,resultFreq);
                 }else{
@@ -328,7 +297,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
                 }
                 notificationDB.setDBAlarm_DeleteFromNoId(_ID);
             }
-            Date startDate = turnString2Date(no_startdate+" "+alarmTime);
+            Date startDate = commonNotification.turnString2Date(no_startdate+" "+alarmTime);
             calendar.setTime(startDate);
             ArrayList<Long> currentAlarmTimeList = getTotalAlarmTimeInFreq(no_startdate,resultFreq, calendar.getTimeInMillis());
 
@@ -342,7 +311,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
                     calendar.set(Calendar.YEAR, 1911);
                     calendar.set(Calendar.MONTH, 1);
                     calendar.set(Calendar.DAY_OF_MONTH, 1);
-                    currentAlarmTimeFormat= turnDate2String(calendar.getTime());
+                    currentAlarmTimeFormat= commonNotification.turnDate2String(calendar.getTime());
                     notificationDB.setDBAlarm_Create(_ID,currentAlarmTimeFormat);
                 }
             }
@@ -353,17 +322,20 @@ public class NotificationDetailActivity extends AppCompatActivity{
                 boolean isPassDur;
                 for(int i=0; i<currentAlarmTimeList.size(); i++) {
                     currentAlarmTime = currentAlarmTimeList.get(i);
+                    while(currentAlarmTime<System.currentTimeMillis()){//如果時間點已超過，則不重新響鈴，直到找到符合頻率的下一個時間點為止
+                        currentAlarmTime = commonNotification.calcNextTime(currentAlarmTime,resultFreq);
+                    }
                     calendar.setTimeInMillis(currentAlarmTime);
-                    currentAlarmTimeFormat= turnDate2String(calendar.getTime());
+                    currentAlarmTimeFormat= commonNotification.turnDate2String(calendar.getTime());
                     newAlarmDate = calendar.getTime();
-                    startDate = turnString2Date(no_startdate+" 23:59");
-                    isPassDur = checkInDuration(resultDur,startDate,newAlarmDate);
+                    startDate = commonNotification.turnString2Date(no_startdate+" 23:59");
+                    isPassDur = commonNotification.checkInDuration(resultDur,startDate,newAlarmDate);
                     if(isPassDur){
                         notificationDB.setDBAlarm_Create(_ID, currentAlarmTimeFormat);
                         alarmIdArr = notificationDB.getDBAlarmIdArrFromNoId(_ID);//重取新的alarmID值
                         if(alarmIdArr!=null){
                             int lastAlarmID = alarmIdArr.get(0);
-                            startAlarmReceiver(_ID, lastAlarmID, no_title, resultFreq, resultDur, no_startdate, currentAlarmTime);
+                            commonNotification.startAlarmReceiver(NotificationDetailActivity.this,_ID, lastAlarmID, no_title, resultFreq, resultDur, no_startdate, currentAlarmTime);
                         }
                     }
                 }
@@ -377,7 +349,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
         public void onClick(View view) {
             statusCode=2;
             //彈出確認視窗
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setCancelable(true);
             builder.setTitle("刪除鬧鈴");
             builder.setMessage("是否確定要刪除此鬧鈴？");
@@ -435,22 +407,6 @@ public class NotificationDetailActivity extends AppCompatActivity{
         return true;
     }
 
-    //設置鬧鐘，到點做事
-    private void startAlarmReceiver(int noId, int lastAlarmID,String no_title,Bundle resultFreq,Bundle resultDur,String startDateStr,long currentAlarmTime){
-        System.out.println("NOtificationDetailActivity startAlarmReceiver===>"+noId+" "+lastAlarmID+" "+new Date(currentAlarmTime));
-        Intent intent = new Intent(NotificationDetailActivity.this, AlarmReceiver.class);
-        intent.putExtra("TITLE", no_title);
-        intent.putExtra("FREQ_BUNDLE", resultFreq);
-        intent.putExtra("DUR_BUNDLE", resultDur);
-        intent.putExtra("START_DATE", startDateStr);
-        intent.putExtra("CURRENT_ALARM_TIME", currentAlarmTime);
-        intent.putExtra("REQUEST_CODE",lastAlarmID);
-        intent.putExtra("NOID",noId);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(NotificationDetailActivity.this, intent.getIntExtra("REQUEST_CODE",0)/*get new Data*/, intent, 0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, currentAlarmTime, pendingIntent);
-    }
-
     //找到指定的鬧鐘，並刪除
     private void cancleAlarmReceiver(int lastAlarmID){
         Intent intent = new Intent(NotificationDetailActivity.this, AlarmReceiver.class);
@@ -479,7 +435,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
                     ArrayList<String> newTimeList = resultFreq.getStringArrayList(FragmentFreqTime.FREQ_TIME_LIST);
                     Date date;
                     for(int i=0; i<newTimeList.size(); i++){
-                        date = turnString2Date(no_startdate+" "+newTimeList.get(i));
+                        date = this.commonNotification.turnString2Date(no_startdate+" "+newTimeList.get(i));
                         currentAlarmTime = date.getTime();
                         currentAlarmTimeList.add(currentAlarmTime);
                     }
@@ -488,18 +444,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
                 currentAlarmTimeList.add(currentAlarmTime);
                 break;
             case FragmentFreqHour.FREQ_HOUR:
-//                String prevDate = resultFreq.getString(FragmentFreqHour.FREQ_HOUR_PREVDATE);
-//                String firstDate = resultFreq.getString(FragmentFreqHour.FREQ_HOUR_FIRSTDATE);
-//                Date date;
-//                if(prevDate!=null && prevDate!=""){
-//                    date = turnString2Date(prevDate);
-//                    currentAlarmTime = date.getTime();
-//                }else if(firstDate!=null && firstDate!=""){
-//                    date = turnString2Date(firstDate);
-//                    currentAlarmTime = date.getTime();
-//                }else{
-                    currentAlarmTime = currentTimeInMillis;
-//                }
+                currentAlarmTime = currentTimeInMillis;
                 currentAlarmTimeList.add(currentAlarmTime);
                 break;
             case FragmentFreqWeeks.FREQ_WEEKS:
@@ -507,7 +452,7 @@ public class NotificationDetailActivity extends AppCompatActivity{
                 boolean isActive;
                 for(int i=0; i<7; i++){
                     currentAlarmTime = currentTimeInMillis;
-                    currentAlarmTime = currentAlarmTime + (i*AlarmReceiver.dayMillis);
+                    currentAlarmTime = currentAlarmTime + (i*CommonNotification.dayMillis);
                     this.calendar.setTimeInMillis(currentAlarmTime);
                     dayOfWeek = this.calendar.get(Calendar.DAY_OF_WEEK);//dayOfWeek [星期日=1，星期一=2，星期二=3，星期三=4，星期四=5，星期五=6，星期六=7]
                     isActive = (resultFreq.getInt("FREQ_WEEKS_WEEK"+dayOfWeek)==1)?true:false;
@@ -522,64 +467,12 @@ public class NotificationDetailActivity extends AppCompatActivity{
                 int z = resultFreq.getInt(FragmentFreqActivePause.FREQ_ACTIVEPAUSE_Z);
                 currentAlarmTime = currentTimeInMillis;
                 if(!(z<=x)){//如果不在持續天數中，則計算暫停天數之後的新時間
-                    currentAlarmTime += (y+1)*AlarmReceiver.dayMillis;
+                    currentAlarmTime += (y+1)*CommonNotification.dayMillis;
                 }
                 currentAlarmTimeList.add(currentAlarmTime);
                 break;
         }
         return currentAlarmTimeList;
-    }
-
-    /**
-     * 判斷是否符合週期範圍
-     */
-    private boolean checkInDuration(Bundle resultDur, Date startDate, Date newAlarmDate) {
-        String cmd = resultDur.getString(CommonFragment.CMD);
-        Date durDate;
-        durDate = new Date();
-        switch (cmd) {
-            case FragmentDurEnddate.DUR_ENDDATE:
-                String endDAte = resultDur.getString(FragmentDurEnddate.DUR_ENDDATE_ENDDATE);
-                endDAte += " 23:59";
-                durDate = this.turnString2Date(endDAte);
-                break;
-            case FragmentDurCont.DUR_CONT:
-                int x = resultDur.getInt(FragmentDurCont.DUR_CONT_X);
-                durDate.setTime(startDate.getTime() + (x * AlarmReceiver.dayMillis));
-                break;
-        }
-        if (newAlarmDate.before(durDate)) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkAfterStartDate(Date startDate, Date newAlarmDate){
-        return newAlarmDate.after(startDate);
-    }
-
-    private Date turnString2Date(String dateStr){
-        Date date;
-        try {
-            date= this.ft.parse(dateStr);
-            return date;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private String turnDate2String(Date date){
-        return this.ft.format(date);
-    }
-
-    //set get----------
-    public static Context getContext() {
-        return CONTEXT;
-    }
-
-    public static void setContext(Context context) {
-        NotificationDetailActivity.CONTEXT = context;
     }
 
 }

@@ -9,8 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+
+import com.example.fivegroup.CommonNotification;
 import com.example.fivegroup.R;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class FragmentDurEnddate extends CommonFragment {
@@ -20,7 +21,7 @@ public class FragmentDurEnddate extends CommonFragment {
     public static final String DUR_ENDDATE="DUR_ENDDATE";
     public static final String DUR_ENDDATE_ENDDATE="DUR_ENDDATE_ENDDATE";
     private Calendar calendar=Calendar.getInstance();//System.out.println(this.calendar.get(Calendar.DAY_OF_WEEK));//6 [星期日=1，星期一=2，星期二=3，星期三=4，星期四=5，星期五=6，星期六=7]
-    private SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private CommonNotification commonNotification = new CommonNotification();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dur_enddate, container, false);
@@ -60,7 +61,7 @@ public class FragmentDurEnddate extends CommonFragment {
                     calendar.set(Calendar.MONTH, month);
                     calendar.set(Calendar.DAY_OF_MONTH, day);
 
-                    String strDateFormat = ft.format(calendar.getTime());
+                    String strDateFormat = commonNotification.turnDate2String(calendar.getTime());
                     String[] dataArr = strDateFormat.split(" ");
                     tv_endDate.setText(dataArr[0]);
                 }

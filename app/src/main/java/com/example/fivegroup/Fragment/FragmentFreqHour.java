@@ -12,6 +12,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.example.fivegroup.CommonNotification;
 import com.example.fivegroup.R;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,7 +33,7 @@ public class FragmentFreqHour extends CommonFragment {
     public static final String FREQ_HOUR_PREVDATE="FREQ_HOUR_PREVDATE";
 
     private Calendar calendar=Calendar.getInstance();
-    private SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private CommonNotification commonNotification = new CommonNotification();
     private String firstDate_Date="";
     private String firstDate_Time="";
     private String prevDate_Date="";
@@ -90,7 +92,7 @@ public class FragmentFreqHour extends CommonFragment {
                     calendar.set(Calendar.MONTH, month);
                     calendar.set(Calendar.DAY_OF_MONTH, day);
 
-                    String strDateFormat = ft.format(calendar.getTime());
+                    String strDateFormat = commonNotification.turnDate2String(calendar.getTime());
                     String[] dataArr = strDateFormat.split(" ");
                     firstDate_Date = dataArr[0];
                     updateFirstDateText(firstDate_Date+" "+firstDate_Time);
@@ -111,7 +113,7 @@ public class FragmentFreqHour extends CommonFragment {
                     calendar.set(Calendar.SECOND, 0);
                     calendar.set(Calendar.MILLISECOND, 0);
 
-                    String strDateFormat = ft.format(calendar.getTime());
+                    String strDateFormat = commonNotification.turnDate2String(calendar.getTime());
                     String[] dataArr = strDateFormat.split(" ");
                     firstDate_Time = dataArr[1];
                     updateFirstDateText(firstDate_Date+" "+firstDate_Time);
@@ -133,7 +135,7 @@ public class FragmentFreqHour extends CommonFragment {
                     calendar.set(Calendar.MONTH, month);
                     calendar.set(Calendar.DAY_OF_MONTH, day);
 
-                    String strDateFormat = ft.format(calendar.getTime());
+                    String strDateFormat = commonNotification.turnDate2String(calendar.getTime());
                     String[] dataArr = strDateFormat.split(" ");
                     prevDate_Date = dataArr[0];
                     updatePrevDateText(prevDate_Date+" "+prevDate_Time);
@@ -154,7 +156,7 @@ public class FragmentFreqHour extends CommonFragment {
                     calendar.set(Calendar.SECOND, 0);
                     calendar.set(Calendar.MILLISECOND, 0);
 
-                    String strDateFormat = ft.format(calendar.getTime());
+                    String strDateFormat = commonNotification.turnDate2String(calendar.getTime());
                     String[] dataArr = strDateFormat.split(" ");
                     prevDate_Time = dataArr[1];
                     updatePrevDateText(prevDate_Date+" "+prevDate_Time);

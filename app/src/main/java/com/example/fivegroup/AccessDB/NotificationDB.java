@@ -32,6 +32,23 @@ public class NotificationDB {
         this.db = db;
     }
 
+    /**
+     * 查詢SQLite版本
+     */
+    public String getSQLiteVersion(){
+        String verison="";
+        String sql = "SELECT sqlite_version()";
+        Cursor c = db.rawQuery(sql,null);
+        if(c.getCount()>0){
+            c.moveToFirst();
+            verison = c.getString(0);//3.8.10.2
+            c.close();
+        }else{
+            Log.w("Warn==>","NotificationDB.getSQLiteVersion()=> sqlite version is no data!!!");
+        }
+        return verison;
+    }
+
     //Notification-------------------------------------------------------------------------
     public void setDBNotification_Create(String no_title, String no_startdate, int no_frequency, int no_duration, int no_active) {
         ContentValues cv = new ContentValues();

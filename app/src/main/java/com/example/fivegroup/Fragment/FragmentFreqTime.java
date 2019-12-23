@@ -11,9 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import androidx.constraintlayout.widget.Constraints;
+import com.example.fivegroup.CommonNotification;
 import com.example.fivegroup.R;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -28,7 +27,7 @@ public class FragmentFreqTime extends CommonFragment {
     private  ArrayList<HashMap> newTimeList = new ArrayList<>();
     private int newTimeLinearLayoutIndex=0;
     private Calendar calendar=Calendar.getInstance();
-    private SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private CommonNotification commonNotification = new CommonNotification();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.root = inflater.inflate(R.layout.fragment_freq_time, container, false);
@@ -76,7 +75,7 @@ public class FragmentFreqTime extends CommonFragment {
                     calendar.set(Calendar.MINUTE, minute);
                     calendar.set(Calendar.SECOND, 0);
                     calendar.set(Calendar.MILLISECOND, 0);
-                    String str = ft.format(calendar.getTime());
+                    String str = commonNotification.turnDate2String(calendar.getTime());
                     addNewTime(str.split(" ")[1]);
                 }
             }, hour, minute, true).show();
