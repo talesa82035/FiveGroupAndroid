@@ -1,6 +1,7 @@
 package com.example.fivegroup;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -139,6 +140,11 @@ public class Query_Activity extends AppCompatActivity {
             str3 = o.getString("dep_name");
 
             list.add(str3);
+            Intent intent = new Intent(Query_Activity.this, Querydetail_Activity.class);
+            Bundle bundle = new Bundle();
+            bundle.putStringArrayList("result",list);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 }

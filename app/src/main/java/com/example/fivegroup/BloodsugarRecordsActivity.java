@@ -30,9 +30,9 @@ public class BloodsugarRecordsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_records_weight);
+        setContentView(R.layout.activity_records_bloodsugar);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("血糖紀錄");
         setSupportActionBar(toolbar);
 

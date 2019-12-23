@@ -30,9 +30,9 @@ public class BloodpressureRecordsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_records_weight);
+        setContentView(R.layout.activity_records_bloodpressure);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("血壓紀錄");
         setSupportActionBar(toolbar);
 
@@ -91,7 +91,6 @@ public class BloodpressureRecordsActivity extends AppCompatActivity {
                 bp_night_l = Integer.valueOf(Bloodpressurerecord_night_low.getText().toString());
             if (Bloodpressurerecord_night_pulse.getText() != null)
                 bp_night_p = Integer.valueOf(Bloodpressurerecord_night_pulse.getText().toString());
-
 
             if (Bloodpressurerecord_note.getText() != null)
                 bloodpressure_no = Bloodpressurerecord_note.getText().toString();

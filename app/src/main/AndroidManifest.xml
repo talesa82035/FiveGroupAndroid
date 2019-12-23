@@ -22,7 +22,8 @@
             android:process=":remote">
         </receiver>
         <activity android:name=".Qrcode_Activity" />
-        <activity android:name=".BloodPressureRecordsActivity"></activity>
+        <activity android:name=".BloodpressureRecordsActivity"></activity>
+        <activity android:name=".BloodsugarRecordsActivity"></activity>
         <activity android:name=".WeightRecordsActivity"></activity>
         <activity android:name=".RecordsActivity" />
         <activity android:name=".MainActivity">
@@ -42,6 +43,7 @@
         <activity android:name=".AlarmActivity" />
         <activity android:name=".NotificationActivity" />
         <activity android:name=".Search_Activity" />
+        <activity android:name=".Querydetail_Activity" />
     </application>
 
 <!--    &lt;!&ndash;設定app的網路操作權限(連接SQL Server用)&ndash;&gt;-->
