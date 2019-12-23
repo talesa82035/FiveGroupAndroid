@@ -18,11 +18,18 @@
                 android:layout_height="wrap_content"
                 android:text="請輸入到期日:" />
 
-            <EditText
-                android:id="@+id/et_endDate"
+            <TextView
+                android:id="@+id/tv_endDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="100dp"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/btnChooseEnddate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:text="日期選擇" />
 
         </LinearLayout>
 

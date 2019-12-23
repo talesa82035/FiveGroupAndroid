@@ -47,41 +47,41 @@ public class NotificationActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        System.out.println("--NotificationActivity onStart--");
+        //total Data
         Cursor cursor = this.getDBData();
         this.parseData(cursor);
         cursor.close();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        System.out.println("--NotificationActivity onResume--");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        System.out.println("--NotificationActivity onPause--");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        System.out.println("--NotificationActivity onStop--");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        System.out.println("--NotificationActivity onDestroy--");
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        System.out.println("--NotificationActivity onResume--");
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        System.out.println("--NotificationActivity onPause--");
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        System.out.println("--NotificationActivity onStop--");
+//    }
+//
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        System.out.println("--NotificationActivity onDestroy--");
+//    }
 
 
     private class addAlarmClickHandler implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(NotificationActivity.this, AlarmActivity.class);
+            Intent intent = new Intent(NotificationActivity.this, NotificationDetailActivity.class);
             startActivity(intent);
         }
     }
@@ -92,7 +92,7 @@ public class NotificationActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             HashMap dbResult = dbResultList.get(i);
 
-            Intent intent = new Intent(NotificationActivity.this, AlarmActivity.class);
+            Intent intent = new Intent(NotificationActivity.this, NotificationDetailActivity.class);
             Bundle bundle = new Bundle();
             bundle.putInt("_ID", (int)dbResult.get("_ID"));
             bundle.putString("no_title", (String)dbResult.get("no_title"));
@@ -119,7 +119,6 @@ public class NotificationActivity extends AppCompatActivity {
         String[] notificationHomeStr = new String[cursor.getCount()];
         HashMap dataMap;
         while(cursor.moveToNext()){
-            System.out.println(cursor.getPosition());
             int _ID = cursor.getInt(0);
             String no_title = cursor.getString(1);
             String no_startdate = cursor.getString(2);

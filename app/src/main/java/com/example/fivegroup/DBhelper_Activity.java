@@ -56,7 +56,7 @@ public class DBhelper_Activity extends SQLiteOpenHelper {
         String DATABASE_CREATE_TABLE_NO_FREQ_WEEK =
                 "create table no_freq_week("
                         + "_ID INT,"
-                        + "no_mon INT,"
+                        + "no_mon INT," //1=true;0=false
                         + "no_tue INT,"
                         + "no_wed INT,"
                         + "no_thu INT,"
@@ -70,7 +70,7 @@ public class DBhelper_Activity extends SQLiteOpenHelper {
                         + "_ID INT,"
                         + "no_freq_active INT,"
                         + "no_freq_pause INT,"
-                        + "no_cycle_xdays INT,"
+                        + "no_cycle_xdays INT,"//value = 1~(no_freq_active+no_freq_pause)
                         + "FOREIGN KEY(_ID) REFERENCES notification(_ID)"
                         + ")";
         String DATABASE_CREATE_TABLE_NO_DUR_CONT =

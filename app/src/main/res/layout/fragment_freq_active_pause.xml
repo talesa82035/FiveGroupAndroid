@@ -54,11 +54,12 @@
                 android:layout_height="wrap_content"
                 android:text="當前處於循環第幾天:" />
 
-            <EditText
-                android:id="@+id/et_z"
+            <TextView
+                android:id="@+id/tv_z"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textSize="18sp" />
 
         </LinearLayout>
     </LinearLayout>

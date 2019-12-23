@@ -40,7 +40,7 @@
         <activity android:name=".Tools_Activity" />
         <activity android:name=".BMI_Activity" />
         <activity android:name=".NavigationActivity" />
-        <activity android:name=".AlarmActivity" />
+        <activity android:name=".NotificationDetailActivity" />
         <activity android:name=".NotificationActivity" />
         <activity android:name=".Search_Activity" />
         <activity android:name=".Querydetail_Activity" />

@@ -36,11 +36,31 @@
                 android:layout_height="wrap_content"
                 android:text="首次服藥時間:" />
 
-            <EditText
-                android:id="@+id/et_firstDate"
+            <TextView
+                android:id="@+id/tv_firstDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnFirstDate_Date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="日期選擇" />
+
+            <Button
+                android:id="@+id/btnFirstDate_Time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="時間選擇" />
 
         </LinearLayout>
 
@@ -54,11 +74,32 @@
                 android:layout_height="wrap_content"
                 android:text="上一次服藥時間:" />
 
-            <EditText
-                android:id="@+id/et_prevDate"
+            <TextView
+                android:id="@+id/tv_prevDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btnPrevDate_Date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="日期選擇" />
+
+            <Button
+                android:id="@+id/btnPrevDate_Time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="時間選擇" />
 
         </LinearLayout>
     </LinearLayout>

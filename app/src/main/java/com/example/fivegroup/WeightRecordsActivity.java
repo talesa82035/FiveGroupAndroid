@@ -39,20 +39,15 @@ public class WeightRecordsActivity extends AppCompatActivity {
         dbhelper = new DBhelper_Activity(this);
         db = dbhelper.getWritableDatabase();
 
-        calendarView = findViewById(R.id.WeightcalendarView);
-        weight_day = findViewById(R.id.weightrecord_day);
-        weight_night = findViewById(R.id.weightrecord_night);
-        weight_note = findViewById(R.id.weightrecord_note);
-        weightrecord = findViewById(R.id.weightrecord);
+        findElement();
+
         weightrecord.setOnClickListener(new weightrecordListener());
         calendarView.setOnDateChangeListener(new CalendarChangeListener());
-        Calendar c = Calendar.getInstance();
-        Year = c.get(Calendar.YEAR);
-        Month = c.get(Calendar.MONTH) + 1;
-        Day = c.get(Calendar.DAY_OF_MONTH);
-        date = Year + "/" + Month + "/" + Day;
-        Toast t = Toast.makeText(WeightRecordsActivity.this, "今天:" + date, Toast.LENGTH_LONG);
+
+        Toast t = Toast.makeText(WeightRecordsActivity.this, "今天:" + getToday(), Toast.LENGTH_LONG);
         t.show();
+
+        changeValue(getToday());
     }
 
     @Override
@@ -99,25 +94,8 @@ public class WeightRecordsActivity extends AppCompatActivity {
             Month = month + 1;
             Day = dayOfMonth;
             date = Year + "/" + Month + "/" + Day;
-            Cursor c = getCursor(date);
-            Toast t = Toast.makeText(WeightRecordsActivity.this, "今天:" + date + "\n 資料" + c.getCount(), Toast.LENGTH_LONG);
-            t.show();
-            int row_count = c.getCount();
-            if (row_count > 0) {
-                c.moveToFirst();    // 移到第 1 筆資料
-                String weight_day_content = c.getString(2);
-                String weight_night_content = c.getString(3);
-                String weight_note_content = c.getString(4);
-                weight_day.setText(weight_day_content);
-                weight_night.setText(weight_night_content);
-                weight_note.setText(weight_note_content);
-                c.close();
-            } else {
-                weight_day.setText("0");
-                weight_night.setText("0");
-                weight_note.setText("");
-                c.close();
-            }
+            changeValue(date);
+
         }
     }
 
@@ -126,5 +104,48 @@ public class WeightRecordsActivity extends AppCompatActivity {
         Cursor c = db.rawQuery(sql, null);
 //        startManagingCursor(c);
         return c;
+    }
+    private void findElement()
+    {
+        calendarView = findViewById(R.id.WeightcalendarView);
+        weight_day = findViewById(R.id.weightrecord_day);
+        weight_night = findViewById(R.id.weightrecord_night);
+        weight_note = findViewById(R.id.weightrecord_note);
+        weightrecord = findViewById(R.id.weightrecord);
+    }
+    private String getToday()
+    {
+        Calendar c = Calendar.getInstance();
+        Year = c.get(Calendar.YEAR);
+        Month = c.get(Calendar.MONTH) + 1;
+        Day = c.get(Calendar.DAY_OF_MONTH);
+        date = Year + "/" + Month + "/" + Day;
+        return date;
+    }
+    public void changeValue(String date)
+    {
+        Cursor c = getCursor(date);
+        int row_count = c.getCount();
+        if (row_count > 0) {
+            c.moveToFirst();    // 移到第 1 筆資料
+            weight_day.setText(c.getString(2));
+            weight_night.setText(c.getString(3));
+            if(c.getString(4)!=null)
+            {
+            weight_note.setText(c.getString(4));
+            }
+            else
+            {
+                weight_note.setText("");
+            }
+            c.close();
+        } else {
+            weight_day.setText("0");
+            weight_night.setText("0");
+            weight_note.setText("");
+            c.close();
+        }
+        Toast t = Toast.makeText(WeightRecordsActivity.this, "日期:" + date + "\n 資料" + c.getCount(), Toast.LENGTH_LONG);
+        t.show();
     }
 }

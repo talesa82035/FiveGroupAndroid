@@ -39,30 +39,13 @@ public class BloodpressureRecordsActivity extends AppCompatActivity {
         dbhelper = new DBhelper_Activity(this);
         db = dbhelper.getWritableDatabase();
 
-        calendarView = findViewById(R.id.BloodpressurecalendarView);
-        Bloodpressurerecord_day_hight = findViewById(R.id.Bloodpressurerecord_day_hight);
-        Bloodpressurerecord_day_low = findViewById(R.id.Bloodpressurerecord_day_low);
-        Bloodpressurerecord_day_pulse = findViewById(R.id.Bloodpressurerecord_day_pulse);
-        Bloodpressurerecord_noon_hight = findViewById(R.id.Bloodpressurerecord_noon_hight);
-        Bloodpressurerecord_noon_low = findViewById(R.id.Bloodpressurerecord_noon_low);
-        Bloodpressurerecord_noon_pulse = findViewById(R.id.Bloodpressurerecord_noon_pulse);
-        Bloodpressurerecord_night_low = findViewById(R.id.Bloodpressurerecord_night_low);
-        Bloodpressurerecord_night_hight = findViewById(R.id.Bloodpressurerecord_night_hight);
-        Bloodpressurerecord_night_pulse = findViewById(R.id.Bloodpressurerecord_night_pulse);
-        Bloodpressurerecord_note = findViewById(R.id.Bloodpressurerecord_note);
+        findElement();
 
-        Bloodpressurerecord = findViewById(R.id.Bloodpressurerecord);
-        Bloodpressurerecord.setOnClickListener(new BloodpressurerecordListener());
-        calendarView.setOnDateChangeListener(new CalendarChangeListener());
-        Calendar c = Calendar.getInstance();
-        Year = c.get(Calendar.YEAR);
-        Month = c.get(Calendar.MONTH) + 1;
-        Day = c.get(Calendar.DAY_OF_MONTH);
-        date = Year + "/" + Month + "/" + Day;
-        Toast t = Toast.makeText(BloodpressureRecordsActivity.this, "今天:" + date, Toast.LENGTH_LONG);
+        Toast t = Toast.makeText(BloodpressureRecordsActivity.this, "今天:" + getToday(), Toast.LENGTH_LONG);
         t.show();
-    }
 
+        changeValue(getToday());
+    }
     @Override
     protected void onStop() {
         super.onStop();
@@ -125,8 +108,6 @@ public class BloodpressureRecordsActivity extends AppCompatActivity {
                             + "\n" + "晚上脈搏" + bp_night_p
                     , Toast.LENGTH_LONG);
             t.show();
-
-
         }
     }
 
@@ -137,43 +118,79 @@ public class BloodpressureRecordsActivity extends AppCompatActivity {
             Month = month + 1;
             Day = dayOfMonth;
             date = Year + "/" + Month + "/" + Day;
-            Cursor c = getCursor(date);
-            Toast t = Toast.makeText(BloodpressureRecordsActivity.this, "今天:" + date + "\n 資料" + c.getCount(), Toast.LENGTH_LONG);
-            t.show();
-            int row_count = c.getCount();
-            if (row_count > 0) {
-                c.moveToFirst();    // 移到第 1 筆資料
-                Bloodpressurerecord_day_hight.setText(c.getString(2));
-                Bloodpressurerecord_day_low.setText(c.getString(3));
-                Bloodpressurerecord_day_pulse.setText(c.getString(4));
-                Bloodpressurerecord_noon_hight.setText(c.getString(5));
-                Bloodpressurerecord_noon_low.setText(c.getString(6));
-                Bloodpressurerecord_noon_pulse.setText(c.getString(7));
-                Bloodpressurerecord_night_hight.setText(c.getString(8));
-                Bloodpressurerecord_night_low.setText(c.getString(9));
-                Bloodpressurerecord_night_pulse.setText(c.getString(10));
-                Bloodpressurerecord_note.setText(c.getString(11));
-                c.close();
-            } else {
-                Bloodpressurerecord_day_hight.setText(0);
-                Bloodpressurerecord_day_low.setText(0);
-                Bloodpressurerecord_day_pulse.setText(0);
-                Bloodpressurerecord_noon_hight.setText(0);
-                Bloodpressurerecord_noon_low.setText(0);
-                Bloodpressurerecord_noon_pulse.setText(0);
-                Bloodpressurerecord_night_hight.setText(0);
-                Bloodpressurerecord_night_low.setText(0);
-                Bloodpressurerecord_night_pulse.setText(0);
-                Bloodpressurerecord_note.setText("");
-                c.close();
-            }
+            changeValue(date);
         }
     }
 
     private Cursor getCursor(String today) {
         String sql = "SELECT * FROM " + DATABASE_TABLE + " WHERE  date  =  '" + today + "'";
         Cursor c = db.rawQuery(sql, null);
-//        startManagingCursor(c);
         return c;
+    }
+    private void findElement()
+    {
+        Bloodpressurerecord_day_hight = findViewById(R.id.Bloodpressurerecord_day_hight);
+        Bloodpressurerecord_day_low = findViewById(R.id.Bloodpressurerecord_day_low);
+        Bloodpressurerecord_day_pulse = findViewById(R.id.Bloodpressurerecord_day_pulse);
+        Bloodpressurerecord_noon_hight = findViewById(R.id.Bloodpressurerecord_noon_hight);
+        Bloodpressurerecord_noon_low = findViewById(R.id.Bloodpressurerecord_noon_low);
+        Bloodpressurerecord_noon_pulse = findViewById(R.id.Bloodpressurerecord_noon_pulse);
+        Bloodpressurerecord_night_low = findViewById(R.id.Bloodpressurerecord_night_low);
+        Bloodpressurerecord_night_hight = findViewById(R.id.Bloodpressurerecord_night_hight);
+        Bloodpressurerecord_night_pulse = findViewById(R.id.Bloodpressurerecord_night_pulse);
+        Bloodpressurerecord_note = findViewById(R.id.Bloodpressurerecord_note);
+        Bloodpressurerecord = findViewById(R.id.Bloodpressurerecord);
+        Bloodpressurerecord.setOnClickListener(new BloodpressurerecordListener());
+        calendarView = findViewById(R.id.BloodpressurecalendarView);
+        calendarView.setOnDateChangeListener(new CalendarChangeListener());
+    }
+    private String getToday()
+    {
+        Calendar c = Calendar.getInstance();
+        Year = c.get(Calendar.YEAR);
+        Month = c.get(Calendar.MONTH) + 1;
+        Day = c.get(Calendar.DAY_OF_MONTH);
+        date = Year + "/" + Month + "/" + Day;
+        return date;
+    }
+    public void changeValue(String date)
+    {
+        Cursor c = getCursor(date);
+        Toast t = Toast.makeText(BloodpressureRecordsActivity.this, "今天:" + date + "\n 資料" + c.getCount(), Toast.LENGTH_LONG);
+        t.show();
+        int row_count = c.getCount();
+        if (row_count > 0) {
+            c.moveToFirst();    // 移到第 1 筆資料
+            Bloodpressurerecord_day_hight.setText(c.getString(2));
+            Bloodpressurerecord_day_low.setText(c.getString(3));
+            Bloodpressurerecord_day_pulse.setText(c.getString(4));
+            Bloodpressurerecord_noon_hight.setText(c.getString(5));
+            Bloodpressurerecord_noon_low.setText(c.getString(6));
+            Bloodpressurerecord_noon_pulse.setText(c.getString(7));
+            Bloodpressurerecord_night_hight.setText(c.getString(8));
+            Bloodpressurerecord_night_low.setText(c.getString(9));
+            Bloodpressurerecord_night_pulse.setText(c.getString(10));
+            if(c.getString(9)!=null)
+            {
+                Bloodpressurerecord_note.setText(c.getString(11));
+            }
+            else
+            {
+                Bloodpressurerecord_note.setText("");
+            }
+            c.close();
+        } else {
+            Bloodpressurerecord_day_hight.setText("0");
+            Bloodpressurerecord_day_low.setText("0");
+            Bloodpressurerecord_day_pulse.setText("0");
+            Bloodpressurerecord_noon_hight.setText("0");
+            Bloodpressurerecord_noon_low.setText("0");
+            Bloodpressurerecord_noon_pulse.setText("0");
+            Bloodpressurerecord_night_hight.setText("0");
+            Bloodpressurerecord_night_low.setText("0");
+            Bloodpressurerecord_night_pulse.setText("0");
+            Bloodpressurerecord_note.setText("");
+            c.close();
+        }
     }
 }
