@@ -39,6 +39,7 @@
         <activity android:name=".Query_Activity" />
         <activity android:name=".Tools_Activity" />
         <activity android:name=".BMI_Activity" />
+        <activity android:name=".MenstrualCycleActivity" />
         <activity android:name=".NavigationActivity" />
         <activity android:name=".NotificationDetailActivity" />
         <activity android:name=".NotificationActivity" />
