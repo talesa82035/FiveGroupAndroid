@@ -47,6 +47,7 @@
         <activity android:name=".Search_Activity" />
         <activity android:name=".Searchdetail_Activity" />
         <activity android:name=".Navi_Activity"/>
+        <activity android:name=".Water_Activity"/>
         <activity android:name=".Querydetail_Activity" />
     </application>
 
