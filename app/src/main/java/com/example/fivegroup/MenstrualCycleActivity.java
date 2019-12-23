@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+//https://calculator.warmiehealth.com/
 public class MenstrualCycleActivity extends AppCompatActivity {
     private TextView tv_menstrualDate;
     private TextView tv_dangerousDate;
@@ -28,9 +29,9 @@ public class MenstrualCycleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menstrual_cycle);
-        this.tv_menstrualDate = findViewById(R.id.tv_menstrualDate);
-        this.tv_dangerousDate = findViewById(R.id.tv_dangerousDate);
-        this.tv_ovulationDate = findViewById(R.id.tv_ovulationDate);
+        this.tv_menstrualDate = findViewById(R.id.tv_menstrualDate);//下次月經日等於「本次月經日加上平均週期天數」 經期長度約為5~7天
+        this.tv_dangerousDate = findViewById(R.id.tv_dangerousDate);//排卵日的前5天～後3天
+        this.tv_ovulationDate = findViewById(R.id.tv_ovulationDate);//下次月經日減掉14天
         this.et_cycle = findViewById(R.id.et_cycle);
         this.tv_lastDate = findViewById(R.id.tv_lastDate);
         this.btnChooseDate = findViewById(R.id.btnChooseDate);
@@ -52,13 +53,23 @@ public class MenstrualCycleActivity extends AppCompatActivity {
                     calendar.set(Calendar.DAY_OF_MONTH, day);
 
                     tv_lastDate.setText(ft.format(calendar.getTime()));
-//                    String strDateFormat = commonNotification.turnDate2String(calendar.getTime());
-//                    String[] dataArr = strDateFormat.split(" ");
-//                    tv_startdate.setText(dataArr[0]);
+                    calcResult();
                 }
             }, year, month, day).show();
         }
     };
+
+    private void calcResult(){
+//        checkValidity();
+        int cycle = Integer.parseInt(this.et_cycle.getText().toString());
+
+    }
+
+//    private void checkValidity(){
+//        if(this.et_cycle.getText().toString().matches("")){
+//
+//        }
+//    }
 
 
 }
