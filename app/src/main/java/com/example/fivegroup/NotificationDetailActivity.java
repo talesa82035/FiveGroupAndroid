@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -439,7 +440,9 @@ public class NotificationDetailActivity extends AppCompatActivity{
 
     //設置鬧鐘，到點做事
     private void startAlarmReceiver(int noId, int lastAlarmID,String no_title,Bundle resultFreq,Bundle resultDur,String startDateStr,long currentAlarmTime){
-        System.out.println("NOtificationDetailActivity startAlarmReceiver===>"+noId+" "+lastAlarmID+" "+new Date(currentAlarmTime));
+        Log.d("ClassName=>","NotificationDetailActivity.class");
+        Log.d("Method=>","startAlarmReceiver()");
+        Log.d("Message=>","noId:"+noId+"; lastAlarmID:"+lastAlarmID+"; no_title:"+no_title+"; resultFreq:"+resultFreq.toString()+"; resultDur:"+resultDur.toString()+"; startDateStr:"+startDateStr+"; currentAlarmTime 2 Date:"+new Date(currentAlarmTime));
         Intent intent = new Intent(NotificationDetailActivity.this, AlarmReceiver.class);
         intent.putExtra("TITLE", no_title);
         intent.putExtra("FREQ_BUNDLE", resultFreq);

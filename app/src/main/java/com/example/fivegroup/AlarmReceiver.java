@@ -67,9 +67,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         this.currentAlarmTime = intent.getLongExtra("CURRENT_ALARM_TIME",0);
         this.requestCode = intent.getIntExtra("REQUEST_CODE",0);
         this.noId = intent.getIntExtra("NOID",0);
-//        System.out.println("---AlarmReceiver--");
-//        Log.i("AA","---AlarmReceiver--");
-//        Log.d("AA","---AlarmReceiver--");
         SingleToast.show(this.vContext,"123456789", Toast.LENGTH_LONG);
 
         //DB

@@ -113,12 +113,6 @@ public class NotificationActivity extends AppCompatActivity {
             int cursorIndex = cursor.getPosition();
             boolean isActive = (no_active==1)?true:false;
             notificationHomeStr[cursorIndex] = "標題:"+no_title+" 開始日期:"+no_startdate+" 是否啟用:"+isActive;
-//            System.out.println(_ID);
-//            System.out.println(no_title);
-//            System.out.println(no_startdate);
-//            System.out.println(no_frequency);
-//            System.out.println(no_duration);
-//            System.out.println(no_active);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, notificationHomeStr);
         listDataView.setAdapter(adapter);
