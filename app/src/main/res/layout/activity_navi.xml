@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -15,21 +15,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn1"
+        android:id="@+id/btnNavi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="計算BMI值" />
+        android:text="開始導航" />
 
     <Button
-        android:id="@+id/btn2"
+        android:id="@+id/btnDial"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="計算每日飲水量" />
-
-    <Button
-        android:id="@+id/btn_menstrualCycle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="計算月經週期" />
+        android:text="撥電話" />
 
 </LinearLayout>

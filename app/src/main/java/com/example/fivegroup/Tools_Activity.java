@@ -31,6 +31,16 @@ public class Tools_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //前往每日飲水量計算
+        Button Water = findViewById(R.id.btn2);
+        Water.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Tools_Activity.this, Water_Activity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     View.OnClickListener onMenstrualCycleClickHandler = new View.OnClickListener() {

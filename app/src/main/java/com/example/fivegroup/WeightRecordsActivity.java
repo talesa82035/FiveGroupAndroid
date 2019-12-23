@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -25,7 +26,7 @@ public class WeightRecordsActivity extends AppCompatActivity {
     private Button weightrecord;
     private String date, weight_no;
     private int Year, Month, Day;
-    private Float weight_d, weight_n;
+    private Double weight_d, weight_n;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +61,27 @@ public class WeightRecordsActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             ContentValues cv = new ContentValues();
-            if (weight_day.getText() != null)
-                weight_d = Float.valueOf(weight_day.getText().toString());
-            if (weight_night.getText() != null)
-                weight_n = Float.valueOf(weight_night.getText().toString());
-            if (weight_note.getText() != null)
-                weight_no = weight_note.getText().toString();
+            if (weight_day.getText().toString().matches(""))
+            {
+                weight_d = 0.0;
+            }
+            else {
+                weight_d = Double.valueOf(weight_day.getText().toString());
+            }
+
+            if (weight_night.getText().toString().matches(""))
+            {
+                weight_n = 0.0;
+            }
+            else {
+                weight_n = Double.valueOf(weight_night.getText().toString());
+            }
+
             cv.put("date", date);
             cv.put("day", weight_d);
             cv.put("night", weight_n);
             cv.put("note", weight_no);
+
             Cursor c = getCursor(date);
             int row_count = c.getCount();
             if (row_count == 0) {
@@ -112,6 +124,9 @@ public class WeightRecordsActivity extends AppCompatActivity {
         weight_night = findViewById(R.id.weightrecord_night);
         weight_note = findViewById(R.id.weightrecord_note);
         weightrecord = findViewById(R.id.weightrecord);
+
+        weight_day.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        weight_night.setInputType(EditorInfo.TYPE_CLASS_PHONE);
     }
     private String getToday()
     {

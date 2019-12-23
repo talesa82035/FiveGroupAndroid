@@ -45,7 +45,8 @@
                 <EditText
                     android:id="@+id/Bloodsugarrecord_day_before"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789."></EditText>
                 <TextView
                     android:id="@+id/BloodsugarrecordtextView02"
                     android:layout_width="wrap_content"
@@ -55,7 +56,8 @@
                 <EditText
                     android:id="@+id/Bloodsugarrecord_day_after"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789."></EditText>
 
             </LinearLayout>
 
@@ -73,7 +75,8 @@
                 <EditText
                     android:id="@+id/Bloodsugarrecord_noon_before"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789."></EditText>
                 <TextView
                     android:id="@+id/BloodsugarrecordtextView04"
                     android:layout_width="wrap_content"
@@ -83,7 +86,8 @@
                 <EditText
                     android:id="@+id/Bloodsugarrecord_noon_after"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789."></EditText>
 
             </LinearLayout>
 
@@ -101,7 +105,8 @@
                 <EditText
                     android:id="@+id/Bloodsugarrecord_night_before"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789."></EditText>
                 <TextView
                     android:id="@+id/BloodsugarrecordtextView06"
                     android:layout_width="wrap_content"
@@ -111,7 +116,8 @@
                 <EditText
                     android:id="@+id/Bloodsugarrecord_night_after"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789."></EditText>
 
             </LinearLayout>
 
@@ -129,7 +135,8 @@
                 <EditText
                     android:id="@+id/Bloodsugarrecord_bedtime"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"></EditText>
+                    android:layout_height="wrap_content"
+                    android:digits="0121456789."></EditText>
 
             </LinearLayout>
 

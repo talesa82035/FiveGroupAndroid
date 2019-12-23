@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -25,7 +26,7 @@ public class BloodsugarRecordsActivity extends AppCompatActivity {
     private Button bloodsugarrecord;
     private String date, bloodsuger_no;
     private int Year, Month, Day;
-    private Float bs_d_b, bs_d_a,bs_n_b,bs_n_a,bs_night_b,bs_night_a,bs_bd;
+    private Double bs_d_b, bs_d_a,bs_n_b,bs_n_a,bs_night_b,bs_night_a,bs_bd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,27 +58,66 @@ public class BloodsugarRecordsActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             ContentValues cv = new ContentValues();
-            if (Bloodsugarrecord_day_before.getText() != null)
-                bs_d_b = Float.valueOf(Bloodsugarrecord_day_before.getText().toString());
-            if (Bloodsugarrecord_day_after.getText() != null)
-                bs_d_a = Float.valueOf(Bloodsugarrecord_day_after.getText().toString());
-            if (Bloodsugarrecord_noon_before.getText() != null)
-                bs_n_b = Float.valueOf(Bloodsugarrecord_noon_before.getText().toString());
-            if (Bloodsugarrecord_noon_after.getText() != null)
-                bs_n_a = Float.valueOf(Bloodsugarrecord_noon_after.getText().toString());
-            if (Bloodsugarrecord_night_before.getText() != null)
-                bs_night_b = Float.valueOf(Bloodsugarrecord_night_before.getText().toString());
-            if (Bloodsugarrecord_night_after.getText() != null)
-                bs_night_a = Float.valueOf(Bloodsugarrecord_night_after.getText().toString());
-            if (Bloodsugarrecord_bedtime.getText() != null)
-                bs_bd = Float.valueOf(Bloodsugarrecord_bedtime.getText().toString());
+            if (Bloodsugarrecord_day_before.getText().toString().matches(""))
+            {
+                bs_d_b = 0.0;
+            }
+            else {
+                bs_d_b = Double.valueOf(Bloodsugarrecord_day_before.getText().toString());
+            }
 
-            if (Bloodsugarrecord_note.getText() != null)
-                bloodsuger_no = Bloodsugarrecord_note.getText().toString();
+            if (Bloodsugarrecord_day_after.getText().toString().matches(""))
+            {
+                bs_d_a = 0.0;
+            }
+            else {
+                bs_d_a = Double.valueOf(Bloodsugarrecord_day_after.getText().toString());
+            }
+
+            if (Bloodsugarrecord_noon_before.getText().toString().matches(""))
+            {
+                bs_n_b = 0.0;
+            }
+            else {
+                bs_n_b = Double.valueOf(Bloodsugarrecord_noon_before.getText().toString());
+            }
+
+            if (Bloodsugarrecord_noon_after.getText().toString().matches(""))
+            {
+                bs_n_a = 0.0;
+            }
+            else {
+                bs_n_a = Double.valueOf(Bloodsugarrecord_noon_after.getText().toString());
+            }
+
+            if (Bloodsugarrecord_night_before.getText().toString().matches(""))
+            {
+                bs_night_b = 0.0;
+            }
+            else {
+                bs_night_b = Double.valueOf(Bloodsugarrecord_night_before.getText().toString());
+            }
+
+            if (Bloodsugarrecord_night_after.getText().toString().matches(""))
+            {
+                bs_night_a = 0.0;
+            }
+            else {
+                bs_night_a = Double.valueOf(Bloodsugarrecord_night_after.getText().toString());
+            }
+            if (Bloodsugarrecord_bedtime.getText().toString().matches(""))
+            {
+                bs_bd = 0.0;
+            }
+            else {
+                bs_bd = Double.valueOf(Bloodsugarrecord_bedtime.getText().toString());
+            }
+
             cv.put("date", date);
             cv.put("day_before", bs_d_b);
             cv.put("day_after", bs_d_a);
             cv.put("noon_before", bs_n_b);
+            cv.put("noon_after", bs_n_a);
             cv.put("noon_after", bs_n_a);
             cv.put("night_before", bs_night_b);
             cv.put("night_after", bs_night_a);
@@ -137,6 +177,14 @@ public class BloodsugarRecordsActivity extends AppCompatActivity {
         bloodsugarrecord.setOnClickListener(new bloodsugarrecordListener());
         calendarView = findViewById(R.id.BloodsugarcalendarView);
         calendarView.setOnDateChangeListener(new CalendarChangeListener());
+
+        Bloodsugarrecord_day_before.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        Bloodsugarrecord_day_after.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        Bloodsugarrecord_noon_before.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        Bloodsugarrecord_noon_after.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        Bloodsugarrecord_night_before.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        Bloodsugarrecord_night_after.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        Bloodsugarrecord_bedtime.setInputType(EditorInfo.TYPE_CLASS_PHONE);
     }
     private String getToday()
     {

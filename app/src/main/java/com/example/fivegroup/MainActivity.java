@@ -156,4 +156,23 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.CAMERA},1);
         }
     }
+
+    //取得GPS權限
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//
+//        if (requestCode == PERMISSIONS_REQUEST_GPS) {
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                builder.setTitle("訊息");
+//                builder.setMessage("成功取得 GPS 存取權限");
+//            } else {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                builder.setTitle("訊息");
+//                builder.setMessage("取得 GPS 存取權限失敗!!  無法讀取 GPS 資訊");
+//            }
+//        }
+//    }
+
 }
