@@ -9,9 +9,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 //https://calculator.warmiehealth.com/
 public class MenstrualCycleActivity extends AppCompatActivity {
@@ -29,9 +32,14 @@ public class MenstrualCycleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menstrual_cycle);
-        this.tv_menstrualDate = findViewById(R.id.tv_menstrualDate);//下次月經日等於「本次月經日加上平均週期天數」 經期長度約為5~7天
-        this.tv_dangerousDate = findViewById(R.id.tv_dangerousDate);//排卵日的前5天～後3天
-        this.tv_ovulationDate = findViewById(R.id.tv_ovulationDate);//下次月經日減掉14天
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("月經週期計算");
+        setSupportActionBar(toolbar);
+
+        this.tv_menstrualDate = findViewById(R.id.tv_menstrualDate);//下次月經時間：下次月經日等於「本次月經日加上平均週期天數」 經期長度約為5~7天
+        this.tv_dangerousDate = findViewById(R.id.tv_dangerousDate);//危險期：排卵日的前5天～後3天
+        this.tv_ovulationDate = findViewById(R.id.tv_ovulationDate);//排卵日：下次月經日減掉14天的前一天
         this.et_cycle = findViewById(R.id.et_cycle);
         this.tv_lastDate = findViewById(R.id.tv_lastDate);
         this.btnChooseDate = findViewById(R.id.btnChooseDate);
@@ -60,9 +68,52 @@ public class MenstrualCycleActivity extends AppCompatActivity {
     };
 
     private void calcResult(){
+        try {
 //        checkValidity();
-        int cycle = Integer.parseInt(this.et_cycle.getText().toString());
+            int cycleDay = Integer.parseInt(this.et_cycle.getText().toString());
+            String date = this.tv_lastDate.getText().toString();
+            Date lastDate = this.ft.parse(date);
 
+            String menstrualDate = this.calcMenstrualDate(cycleDay,lastDate);
+            this.tv_menstrualDate.setText(menstrualDate);
+
+            String dangerousDate = this.calcDangerousDate(cycleDay,lastDate);
+            this.tv_dangerousDate.setText(dangerousDate);
+
+            String ovulationDate = this.calcOvulationDate(cycleDay,lastDate);
+            this.tv_ovulationDate.setText(ovulationDate);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+    }
+
+    private String calcMenstrualDate(int cycleDay,Date lastDate){
+        this.calendar.setTime(lastDate);
+        long lastDateLong = this.calendar.getTimeInMillis();
+        Date nextStartDate = new Date(lastDateLong + (cycleDay*CommonNotification.dayMillis));
+        Date nextEndDate = new Date(nextStartDate.getTime()+(7*CommonNotification.dayMillis));
+
+        return this.ft.format(nextStartDate)+"~"+this.ft.format(nextEndDate);
+    }
+
+    private String calcDangerousDate(int cycleDay,Date lastDate){
+        this.calendar.setTime(lastDate);
+        long lastDateLong = this.calendar.getTimeInMillis();
+        long nextStartDateLong = lastDateLong + (cycleDay*CommonNotification.dayMillis);
+        long ovulationDateLong = nextStartDateLong-(14*CommonNotification.dayMillis);
+
+        Date dangerousStartDate = new Date(ovulationDateLong-(5*CommonNotification.dayMillis));
+        Date dangerousEndDate = new Date(ovulationDateLong+(3*CommonNotification.dayMillis));
+        return this.ft.format(dangerousStartDate)+"~"+this.ft.format(dangerousEndDate);
+    }
+
+    private String calcOvulationDate(int cycleDay,Date lastDate){
+        this.calendar.setTime(lastDate);
+        long lastDateLong = this.calendar.getTimeInMillis();
+        long nextStartDateLong = lastDateLong + (cycleDay*CommonNotification.dayMillis);
+        Date ovulationDate = new Date(nextStartDateLong-(15*CommonNotification.dayMillis));
+
+        return this.ft.format(ovulationDate);
     }
 
 //    private void checkValidity(){
