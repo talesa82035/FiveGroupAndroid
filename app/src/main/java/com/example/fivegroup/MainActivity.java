@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getPermissionsCamera();
+        getPermissionsGPS();
 
 
 
@@ -187,6 +188,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //取得GPS權限
+    public void getPermissionsGPS(){
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+        }else{
+            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+        }
+    }
+    
     //取得GPS權限
 //    @Override
 //    public void onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantResults) {

@@ -3,8 +3,14 @@
     package="com.example.fivegroup">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!--取得GPS權限-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <!--取得HTTP POST網路權限-->
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--取得相機權限-->
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -61,6 +67,6 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <!--加入撥號權限-->
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+<!--    <uses-permission android:name="android.permission.CALL_PHONE"/>-->
 
 </manifest>

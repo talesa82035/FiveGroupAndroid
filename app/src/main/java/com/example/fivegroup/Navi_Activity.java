@@ -28,10 +28,9 @@ import org.json.JSONObject;
 
 public class Navi_Activity extends AppCompatActivity  implements LocationListener{
 
-    private Button btnNavi, btnDial;
+    private Button btnShowMap, btnNavi, btnDial;
     private String num, addr;
     private LatLng destination_lngLat;
-    private double lat,lng;
     private LocationManager lc;
     private Location currentLocation;
 
@@ -54,48 +53,38 @@ public class Navi_Activity extends AppCompatActivity  implements LocationListene
             num = bundle.getString("num");
             addr = bundle.getString("addr");
         }
-
     }
 
     private void findViews() {
+        btnShowMap = findViewById(R.id.btnShowMap);
         btnNavi = findViewById(R.id.btnNavi);
         btnDial = findViewById(R.id.btnDial);
     }
 
     private void setListeners() {
+        btnShowMap.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                double lat,lng;
+                String label = "目前位置";
+                String geoString,queryString;
+
+                lat = currentLocation.getLatitude();
+                lng = currentLocation.getLongitude();
+                geoString = "geo:" + lat +","+ lng;
+                queryString = lat + "," + lng + "(" + label + ")";
+                queryString = Uri.encode(queryString);
+                geoString = geoString + "?q=" + queryString + "?z=16";
+
+                Intent intent  = new Intent(Intent.ACTION_VIEW, Uri.parse(geoString));
+                startActivity(intent);
+            }
+        });
+
         btnNavi.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                String bestProvider = lc.getBestProvider(new Criteria(),true);
-                try{
-//                    System.out.println("--------btnNavi onClick------");
-//                    System.out.println(bestProvider);
-//                    System.out.println(lc);
-                    currentLocation = lc.getLastKnownLocation(bestProvider);
-//                    System.out.println(currentLocation.toString());
-                    if (currentLocation != null){
-                        lat = currentLocation.getLatitude();
-                        lng = currentLocation.getLongitude();
-
-                    } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(Navi_Activity.this);
-                        builder.setTitle("訊息");
-                        builder.setMessage("取得目前 GPS  位置資料失敗!!");
-//                        output.setText("取得目前 GPS  位置資料失敗!!  currentLocation  = null");
-                    }
-                } catch(SecurityException ex) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Navi_Activity.this);
-                    builder.setTitle("訊息");
-                    builder.setMessage("取得目前 GPS  位置資料失敗!!\n 請檢查存取權限，並開啟GPS");
-//                    output.setText("取得目前 GPS  位置資料失敗!!  請檢查存取權限，並開啟GPS");
-                }
-
-                getAddress2LngLat_startingPlace_lngLat(addr);
-//                if (!("".equals(et_startingPlace.getText().toString()) || "".equals(et_destination.getText().toString()))) {
-//                    getAddress2LngLat_startingPlace_lngLat(et_startingPlace.getText().toString());
-//                    getAddress2LngLat_startingPlace_lngLat(et_destination.getText().toString());
-//                }
+                getDestinationAddress2LngLat(addr);
             }
         });
 
@@ -109,20 +98,18 @@ public class Navi_Activity extends AppCompatActivity  implements LocationListene
         });
     }
 
-    private void getAddress2LngLat_startingPlace_lngLat(final String place) {
-        String url = "https://maps.googleapis.com/maps/api/geocode/json?address="+place+"&key=AIzaSyCeXT8HJRAADsUaLFa_CJKmPJsYzWpgnDs&language=zh-TW";
+    private void getDestinationAddress2LngLat(String destinationPlace) {
+        String url = "https://maps.googleapis.com/maps/api/geocode/json?address="+destinationPlace+"&key=AIzaSyCeXT8HJRAADsUaLFa_CJKmPJsYzWpgnDs&language=zh-TW";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url,null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("Success=====>",response.toString());
+                JSONObject data;
+                LatLng result;
                 try{
-                    JSONObject data = ((JSONObject)response.getJSONArray("results").get(0)).getJSONObject("geometry").getJSONObject("location");
-                    LatLng result = new LatLng(data.getDouble("lat"),data.getDouble("lng"));
-//                    if(place.equals(et_startingPlace.getText().toString())){
-//                        startingPlace_lngLat = result;
-//                    }else if(place.equals(et_destination.getText().toString())){
-                        destination_lngLat = result;
-//                    }
+                    data = ((JSONObject)response.getJSONArray("results").get(0)).getJSONObject("geometry").getJSONObject("location");
+                    result = new LatLng(data.getDouble("lat"),data.getDouble("lng"));
+                    destination_lngLat = result;
                     startNavigation();
                 }catch (JSONException e){
                     e.printStackTrace();
@@ -137,11 +124,14 @@ public class Navi_Activity extends AppCompatActivity  implements LocationListene
         Volley.newRequestQueue(this).add(request);
     }
 
+    /**
+     *  開導導航
+     */
     private void startNavigation(){
         if(destination_lngLat==null)return;
         Intent intent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("http://maps.google.com/maps?"
-                        + "saddr="+ lat + "," + lng
+                        + "saddr="+ currentLocation.getLatitude() + "," + currentLocation.getLongitude()
                         + "&daddr=" + destination_lngLat.latitude + "," + destination_lngLat.longitude
                         +"&avoid=highway"
                         +"&language=zh-TW")
@@ -152,15 +142,7 @@ public class Navi_Activity extends AppCompatActivity  implements LocationListene
 
     @Override
     public void onLocationChanged(Location location) {
-        if(location != null){
-            lat = location.getLatitude();
-            lng = location.getLongitude();
-            currentLocation = location;
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(Navi_Activity.this);
-            builder.setTitle("訊息");
-            builder.setMessage("取得目前 GPS  位置資料失敗!!\n 請檢查存取權限，並開啟GPS");
-        }
+        this.currentLocation = location;
     }
 
     @Override
@@ -178,22 +160,19 @@ public class Navi_Activity extends AppCompatActivity  implements LocationListene
 
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        int minReflashTime = 1000;
-//        float minDistance = 1;
-//        try {
-//            String bestProvider = lc.getBestProvider(new Criteria(),true);
-//            if (bestProvider != null){
-//                lc.requestLocationUpdates(bestProvider,minReflashTime,minDistance,this);
-//            } else {
-//                output.setText("註冊 GPS  requestLocationUpdate 失敗!!  請檢查存取權限，並開啟GPS");
-//            }
-//
-//        } catch (SecurityException ex) {
-//            output.setText("註冊 GPS  requestLocationUpdate 失敗!!  請檢查存取權限，並開啟GPS");
-//        }
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int minReflashTime = 1000;
+        float minDistance = 1;
+        try {
+            String bestProvider = this.lc.getBestProvider(new Criteria(),true);
+            if (bestProvider != null) {
+                this.lc.requestLocationUpdates(bestProvider, minReflashTime, minDistance, this);
+            }
+        } catch (SecurityException ex) {
+            ex.printStackTrace();
+        }
+    }
 }

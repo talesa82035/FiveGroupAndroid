@@ -15,6 +15,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/btnShowMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="顯示醫院位置" />
+
+    <Button
         android:id="@+id/btnNavi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
