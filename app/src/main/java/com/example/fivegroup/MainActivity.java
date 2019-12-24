@@ -56,12 +56,42 @@ public class MainActivity extends AppCompatActivity {
     }
     //鑄造　AlertDialog 提醒視窗
     protected AlertDialog.Builder announcement(){
+        String message="好的開始\n成功的一半";
+        message = "【功能上架一覽表】\n" +
+                "\n" +
+                "2019-12-24\n" +
+                "-實用工具：計算月經週期\n" +
+                "\n" +
+                "2019-12-23\n" +
+                "-實用工具：計算基礎代謝率\n" +
+                "-實用工具：計算飲水量\n" +
+                "-用藥提醒\n" +
+                "\n" +
+                "2019-12-15\n" +
+                "-個人紀錄：血壓\n" +
+                "-個人紀錄：血糖\n" +
+                "\n" +
+                "2019-12-13\n" +
+                "-意見回饋\n" +
+                "\n" +
+                "2019-12-06\n" +
+                "-該看哪科\n" +
+                "\n" +
+                "2019-11-26\n" +
+                "-個人紀錄：體重\n" +
+                "\n" +
+                "2019-11-19\n" +
+                "-實用工具：計算BMI值\n" +
+                "\n" +
+                "2019-11-17\n" +
+                "-最新消息";
+
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         final View v = inflater.inflate(R.layout.activity_announcements, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("系統公告")
                 .setView(v)
-                .setMessage("好的開始\n成功的一半")
+                .setMessage(message)
                 .setPositiveButton("確定",null);
         return builder;
     }
