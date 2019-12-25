@@ -283,16 +283,14 @@ public class Search_Activity extends AppCompatActivity {
             list.add(hospital);
             list_num.add(num);
             list_addr.add(addr);
-
-            Intent intent = new Intent(Search_Activity.this, Searchdetail_Activity.class);
-            Bundle bundle = new Bundle();
-            bundle.putStringArrayList("result",list);
-            bundle.putStringArrayList("num",list_num);
-            bundle.putStringArrayList("addr",list_addr);
-            intent.putExtras(bundle);
-            startActivity(intent);
         }
-
+        Intent intent = new Intent(Search_Activity.this, Searchdetail_Activity.class);
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("result",list);
+        bundle.putStringArrayList("num",list_num);
+        bundle.putStringArrayList("addr",list_addr);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private void getDoctor(String urlString) {
