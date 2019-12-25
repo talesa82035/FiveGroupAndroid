@@ -326,15 +326,13 @@ public class Search_Activity extends AppCompatActivity {
 
             list.add(doctor);
             list_bg.add(bg);
-
-            Intent intent = new Intent(Search_Activity.this, Doc_Result_Activity.class);
-            Bundle bundle = new Bundle();
-            bundle.putStringArrayList("result",list);
-            bundle.putStringArrayList("bg",list_bg);
-            intent.putExtras(bundle);
-            startActivity(intent);
         }
-
+        Intent intent = new Intent(Search_Activity.this, Doc_Result_Activity.class);
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("result",list);
+        bundle.putStringArrayList("bg",list_bg);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
 }
