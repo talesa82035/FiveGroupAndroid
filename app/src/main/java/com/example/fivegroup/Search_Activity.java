@@ -98,6 +98,22 @@ public class Search_Activity extends AppCompatActivity {
             }
         });
 
+        btn2.setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                str_dist = spin2.getSelectedItem().toString();
+                str_dep = spin3.getSelectedItem().toString();
+//                str_hos = et1.getText().toString();
+//                str_doc = et2.getText().toString();
+                hos_url = hospital_url + "city_name=" + str_city + "&district_name=" + str_dist + "&dep_name=" + str_dep +
+                        "&hos_name&doc_name&hos_eng_name&date";
+
+                getResult(hos_url);
+            }
+        });
+
+
     }
 
 

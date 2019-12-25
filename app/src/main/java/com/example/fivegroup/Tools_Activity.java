@@ -41,6 +41,16 @@ public class Tools_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //前往基礎代謝率計算
+        Button bmr = findViewById(R.id.btn4);
+        bmr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Tools_Activity.this, BMR_Activity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     View.OnClickListener onMenstrualCycleClickHandler = new View.OnClickListener() {

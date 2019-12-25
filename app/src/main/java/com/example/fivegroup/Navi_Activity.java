@@ -65,19 +65,7 @@ public class Navi_Activity extends AppCompatActivity  implements LocationListene
         btnShowMap.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                double lat,lng;
-                String label = "目前位置";
-                String geoString,queryString;
-
-                lat = currentLocation.getLatitude();
-                lng = currentLocation.getLongitude();
-                geoString = "geo:" + lat +","+ lng;
-                queryString = lat + "," + lng + "(" + label + ")";
-                queryString = Uri.encode(queryString);
-                geoString = geoString + "?q=" + queryString + "?z=16";
-
-                Intent intent  = new Intent(Intent.ACTION_VIEW, Uri.parse(geoString));
-                startActivity(intent);
+                getDestinationAddress2LngLat2(addr);
             }
         });
 
@@ -96,6 +84,45 @@ public class Navi_Activity extends AppCompatActivity  implements LocationListene
                 startActivity(i);
             }
         });
+    }
+
+    private void getDestinationAddress2LngLat2(String destinationPlace) {
+        String url = "https://maps.googleapis.com/maps/api/geocode/json?address="+destinationPlace+"&key=AIzaSyCeXT8HJRAADsUaLFa_CJKmPJsYzWpgnDs&language=zh-TW";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url,null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Success=====>",response.toString());
+                double lat,lng;
+                String label = "目前位置";
+                String geoString,queryString;
+                JSONObject data;
+                LatLng result;
+                try{
+                    data = ((JSONObject)response.getJSONArray("results").get(0)).getJSONObject("geometry").getJSONObject("location");
+                    result = new LatLng(data.getDouble("lat"),data.getDouble("lng"));
+                    destination_lngLat = result;
+
+                    lat = destination_lngLat.latitude;
+                    lng = destination_lngLat.longitude;
+                    geoString = "geo:" + lat +","+ lng;
+                    queryString = lat + "," + lng + "(" + label + ")";
+                    queryString = Uri.encode(queryString);
+                    geoString = geoString + "?q=" + queryString + "?z=16";
+
+                    Intent intent  = new Intent(Intent.ACTION_VIEW, Uri.parse(geoString));
+                    startActivity(intent);
+
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        },new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Fail=====>",error.toString());
+            }
+        });
+        Volley.newRequestQueue(this).add(request);
     }
 
     private void getDestinationAddress2LngLat(String destinationPlace) {

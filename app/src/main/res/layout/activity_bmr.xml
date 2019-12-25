@@ -23,19 +23,55 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="每日適當飲水量"
+            android:text="基礎代謝率"
             android:textSize="30dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"/>
 
         <TextView
-            android:id="@+id/tv3"
+            android:id="@+id/tv4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAlignment="center"
             android:textColor="#A7663B"
-            android:textSize="70sp" />
+            android:textSize="70sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="性別:"
+            android:textSize="20sp"/>
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/rgGender">
+
+        <RadioButton
+            android:id="@+id/boy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:checked="true"
+            android:text="男"></RadioButton>
+
+        <RadioButton
+            android:id="@+id/girl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="女"></RadioButton>
+
+    </RadioGroup>
+
 
     </LinearLayout>
     <LinearLayout
@@ -48,11 +84,33 @@
             android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="體重:"
+            android:text="身高:"
             android:textSize="20sp"/>
 
         <EditText
             android:id="@+id/et1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:hint="單位:公分"
+            android:inputType="numberDecimal" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="體重:"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/et2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -65,55 +123,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp"
-        >
+        android:padding="10dp">
 
         <TextView
-            android:id="@+id/tv2"
+            android:id="@+id/tv3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="年齡:"
             android:textSize="20sp"/>
 
-        <RadioGroup
-            android:id="@+id/age"
+        <EditText
+            android:id="@+id/et3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
-            <RadioButton
-                android:id="@+id/a0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2-6歲">
-            </RadioButton>
-            <RadioButton
-                android:id="@+id/a1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="7-12歲">
-            </RadioButton>
-
-            <RadioButton
-                android:id="@+id/a2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="13-30歲"></RadioButton>
-            <RadioButton
-                android:id="@+id/a3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="31-65歲">
-        </RadioButton>
-            <RadioButton
-                android:id="@+id/a4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="65歲(不含)以上">
-        </RadioButton>
-
-        </RadioGroup>
-
+            android:layout_marginLeft="10dp"
+            android:hint="請輸入年齡"
+            android:inputType="numberDecimal" />
 
     </LinearLayout>
 
@@ -139,6 +164,7 @@
             android:background="#F32121"
             android:text="清除" />
     </LinearLayout>
+
 
 
 </LinearLayout>

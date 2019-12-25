@@ -58,6 +58,7 @@
         <activity android:name=".Water_Activity"/>
         <activity android:name=".Querydetail_Activity" />
         <activity android:name=".QrresultDetailActivity" />
+        <activity android:name=".BMR_Activity"/>
     </application>
 
 <!--    &lt;!&ndash;設定app的網路操作權限(連接SQL Server用)&ndash;&gt;-->
