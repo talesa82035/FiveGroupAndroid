@@ -12,14 +12,35 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.content.pm.PackageManager;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    String url = "http://10.10.3.104/api/AnnouncementAPI?";
+    String str1;
+
+    ArrayList<String> list = new ArrayList<>();
+    private ListView lv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setSubtitle("專題實作");
         setSupportActionBar(toolbar);
 
+        lv = findViewById(R.id.listViewJsonData);
+
         getPermissionsCamera();
         getPermissionsGPS();
-
-
 
         //取得主頁面的元素，並設置點擊事件監聽器
         CardView finddoctor = findViewById(R.id.card01);
@@ -57,35 +78,35 @@ public class MainActivity extends AppCompatActivity {
     }
     //鑄造　AlertDialog 提醒視窗
     protected AlertDialog.Builder announcement(){
-        String message="好的開始\n成功的一半";
-        message = "【功能上架一覽表】\n" +
-                "\n" +
-                "2019-12-24\n" +
-                "-實用工具：計算月經週期\n" +
-                "\n" +
-                "2019-12-23\n" +
-                "-實用工具：計算基礎代謝率\n" +
-                "-實用工具：計算飲水量\n" +
-                "-用藥提醒\n" +
-                "\n" +
-                "2019-12-15\n" +
-                "-個人紀錄：血壓\n" +
-                "-個人紀錄：血糖\n" +
-                "\n" +
-                "2019-12-13\n" +
-                "-意見回饋\n" +
-                "\n" +
-                "2019-12-06\n" +
-                "-該看哪科\n" +
-                "\n" +
-                "2019-11-26\n" +
-                "-個人紀錄：體重\n" +
-                "\n" +
-                "2019-11-19\n" +
-                "-實用工具：計算BMI值\n" +
-                "\n" +
-                "2019-11-17\n" +
-                "-最新消息";
+        String message=str1;
+//        message = "【功能上架一覽表】\n" +
+//                "\n" +
+//                "2019-12-24\n" +
+//                "-實用工具：計算月經週期\n" +
+//                "\n" +
+//                "2019-12-23\n" +
+//                "-實用工具：計算基礎代謝率\n" +
+//                "-實用工具：計算飲水量\n" +
+//                "-用藥提醒\n" +
+//                "\n" +
+//                "2019-12-15\n" +
+//                "-個人紀錄：血壓\n" +
+//                "-個人紀錄：血糖\n" +
+//                "\n" +
+//                "2019-12-13\n" +
+//                "-意見回饋\n" +
+//                "\n" +
+//                "2019-12-06\n" +
+//                "-該看哪科\n" +
+//                "\n" +
+//                "2019-11-26\n" +
+//                "-個人紀錄：體重\n" +
+//                "\n" +
+//                "2019-11-19\n" +
+//                "-實用工具：計算BMI值\n" +
+//                "\n" +
+//                "2019-11-17\n" +
+//                "-最新消息";
 
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         final View v = inflater.inflate(R.layout.activity_announcements, null);
@@ -100,7 +121,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.announcement:
-                announcement().show();
+
+                getData(url);
+//                announcement().show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -197,23 +220,49 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
         }
     }
-    
-    //取得GPS權限
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+    private String getData(String urlString) {
+        String result = "";
+        //使用JsonArrayRequest類別要求JSON資料。
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, urlString, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d("回傳結果", "結果=" + response.toString());
+                try {
+                    parseJSON(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("回傳結果", "錯誤訊息：" + error.toString());
+            }
+        });
+
+        Volley.newRequestQueue(this).add(request);
+        return result;
+    }
+
+    //解析JSON元素
+    private void parseJSON(JSONArray jsonArray) throws JSONException {
+
+//        String str2;
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject o = jsonArray.getJSONObject(i);
+            str1 = o.getString("a_content").replaceAll("\\\\n", "\n");
+//            str2 = o.getString("內容");
+
+//            list.add(str1);
+//            context.add(str2);
+        }
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
 //
-//        if (requestCode == PERMISSIONS_REQUEST_GPS) {
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setTitle("訊息");
-//                builder.setMessage("成功取得 GPS 存取權限");
-//            } else {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setTitle("訊息");
-//                builder.setMessage("取得 GPS 存取權限失敗!!  無法讀取 GPS 資訊");
-//            }
-//        }
-//    }
+//        lv.setAdapter(adapter);
+
+        announcement().show();
+    }
+
 
 }

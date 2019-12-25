@@ -59,6 +59,9 @@
         <activity android:name=".Querydetail_Activity" />
         <activity android:name=".QrresultDetailActivity" />
         <activity android:name=".BMR_Activity"/>
+        <activity android:name=".Doc_Result_Activity"/>
+        <activity android:name=".Bgdetail_Activity"/>
+
     </application>
 
 <!--    &lt;!&ndash;設定app的網路操作權限(連接SQL Server用)&ndash;&gt;-->

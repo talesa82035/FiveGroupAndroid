@@ -31,12 +31,13 @@ public class Search_Activity extends AppCompatActivity {
     private Spinner spin1, spin2, spin3;
     ArrayList<String> list_num = new ArrayList<>();
     ArrayList<String> list_addr = new ArrayList<>();
+    ArrayList<String> list_bg = new ArrayList<>();
     private Button btn1, btn2;
     private EditText et1, et2;
     private String location_url = "http://10.10.3.104/api/SchedulesAPI?";
     private String hospital_url = "http://10.10.3.104/api/HospitalsAPI?";
     private String dep_url = "http://10.10.3.104/api/SymptomDepartmentAPI?";
-    private String url1, url2, url3, str1, str_city, str3, str_dist, str_dep, str_hos, str_doc, cityname, hos_url, num, addr;
+    private String url1, url2, url3, str1, str_city, str3, str_dist, str_dep, str_hos, str_doc, cityname, hos_url, doc_url, bg, num, addr;
 
 
     @Override
@@ -105,11 +106,17 @@ public class Search_Activity extends AppCompatActivity {
                 str_dist = spin2.getSelectedItem().toString();
                 str_dep = spin3.getSelectedItem().toString();
 //                str_hos = et1.getText().toString();
-//                str_doc = et2.getText().toString();
-                hos_url = hospital_url + "city_name=" + str_city + "&district_name=" + str_dist + "&dep_name=" + str_dep +
-                        "&hos_name&doc_name&hos_eng_name&date";
+                str_doc = et2.getText().toString();
+                if(str_doc != ""){
+                    doc_url = location_url + "city_name=" + str_city + "&district_name=" + str_dist + "&dep_name=" + str_dep +
+                            "&doc_name=" + str_doc + "&hos_name&hos_eng_name&date";
+                }else{
+                    doc_url = location_url + "city_name=" + str_city + "&district_name=" + str_dist + "&dep_name=" + str_dep +
+                            "&hos_name&doc_name&hos_eng_name&date";
+                }
 
-                getResult(hos_url);
+
+                getDoctor(doc_url);
             }
         });
 
@@ -288,6 +295,49 @@ public class Search_Activity extends AppCompatActivity {
 
     }
 
+    private void getDoctor(String urlString) {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, urlString, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d("回傳結果", "結果=" + response.toString());
+                try {
+                    parseJSON5(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("回傳結果", "錯誤訊息：" + error.toString());
+            }
+        });
+
+        Volley.newRequestQueue(this).add(request);
+    }
+
+    private void parseJSON5(JSONArray jsonArray) throws JSONException {
+
+        String doctor;
+        ArrayList<String> list = new ArrayList<>();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject o = jsonArray.getJSONObject(i);
+            doctor = o.getString("doc_name")+"\n"+o.getString("hos_name") ;
+            bg = o.getString("doc_history");
+
+            list.add(doctor);
+            list_bg.add(bg);
+
+            Intent intent = new Intent(Search_Activity.this, Doc_Result_Activity.class);
+            Bundle bundle = new Bundle();
+            bundle.putStringArrayList("result",list);
+            bundle.putStringArrayList("bg",list_bg);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+
+    }
 
 }
 
