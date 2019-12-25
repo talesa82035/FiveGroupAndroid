@@ -76,7 +76,7 @@ public class WeightRecordsActivity extends AppCompatActivity {
             else {
                 weight_n = Double.valueOf(weight_night.getText().toString());
             }
-
+            weight_no = weight_note.getText().toString();
             cv.put("date", date);
             cv.put("day", weight_d);
             cv.put("night", weight_n);
@@ -145,14 +145,8 @@ public class WeightRecordsActivity extends AppCompatActivity {
             c.moveToFirst();    // 移到第 1 筆資料
             weight_day.setText(c.getString(2));
             weight_night.setText(c.getString(3));
-            if(c.getString(4)!=null)
-            {
             weight_note.setText(c.getString(4));
-            }
-            else
-            {
-                weight_note.setText("");
-            }
+
             c.close();
         } else {
             weight_day.setText("0");
@@ -160,7 +154,5 @@ public class WeightRecordsActivity extends AppCompatActivity {
             weight_note.setText("");
             c.close();
         }
-        Toast t = Toast.makeText(WeightRecordsActivity.this, "日期:" + date + "\n 資料" + c.getCount(), Toast.LENGTH_LONG);
-        t.show();
     }
 }

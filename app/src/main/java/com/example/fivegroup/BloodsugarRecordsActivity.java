@@ -113,6 +113,7 @@ public class BloodsugarRecordsActivity extends AppCompatActivity {
                 bs_bd = Double.valueOf(Bloodsugarrecord_bedtime.getText().toString());
             }
 
+            bloodsuger_no = Bloodsugarrecord_note.getText().toString();
             cv.put("date", date);
             cv.put("day_before", bs_d_b);
             cv.put("day_after", bs_d_a);
@@ -198,8 +199,6 @@ public class BloodsugarRecordsActivity extends AppCompatActivity {
     public void changeValue(String date)
     {
         Cursor c = getCursor(date);
-        Toast t = Toast.makeText(BloodsugarRecordsActivity.this, "今天:" + date + "\n 資料" + c.getCount(), Toast.LENGTH_LONG);
-        t.show();
         int row_count = c.getCount();
         if (row_count > 0) {
             c.moveToFirst();    // 移到第 1 筆資料

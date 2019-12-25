@@ -128,6 +128,8 @@ public class BloodpressureRecordsActivity extends AppCompatActivity {
                 bp_night_p = Integer.valueOf(Bloodpressurerecord_night_pulse.getText().toString());
             }
 
+            bloodpressure_no = Bloodpressurerecord_note.getText().toString();
+
             cv.put("date", date);
             cv.put("day_hight", bp_d_h);
             cv.put("day_low", bp_d_l);
@@ -217,8 +219,6 @@ public class BloodpressureRecordsActivity extends AppCompatActivity {
     public void changeValue(String date)
     {
         Cursor c = getCursor(date);
-        Toast t = Toast.makeText(BloodpressureRecordsActivity.this, "今天:" + date + "\n 資料" + c.getCount(), Toast.LENGTH_LONG);
-        t.show();
         int row_count = c.getCount();
         if (row_count > 0) {
             c.moveToFirst();    // 移到第 1 筆資料

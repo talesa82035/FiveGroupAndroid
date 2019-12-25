@@ -1,6 +1,7 @@
 package com.example.fivegroup;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.content.pm.PackageManager;
 import android.util.SparseArray;
@@ -38,7 +39,7 @@ public class Qrcode_Activity extends AppCompatActivity{
         barcodeDetector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.QR_CODE).build();
         cameraSource=new CameraSource.Builder(this,barcodeDetector)
-                .setRequestedPreviewSize(300,300).build();
+                .setRequestedPreviewSize(800,800).setAutoFocusEnabled(true).build();            //增加自動對焦功能
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback(){
             @Override
@@ -52,6 +53,9 @@ public class Qrcode_Activity extends AppCompatActivity{
                     e.printStackTrace();
                 }
             }
+
+
+
 
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -75,13 +79,15 @@ public class Qrcode_Activity extends AppCompatActivity{
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> qrCodes=detections.getDetectedItems();
-                if(qrCodes.size()!=0){
-                    textView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            textView.setText(qrCodes.valueAt(0).displayValue);
-                        }
-                    });
+                if(qrCodes.size()> 0){
+                                                             //To Qrresult activity
+                    barcodeDetector.release();               //prevent camera auto repeated scanning
+                    Intent intent = new Intent(Qrcode_Activity.this, Qrresult.class);
+                    intent.putExtra("barcode", qrCodes.valueAt(0));
+                    startActivityForResult(intent, 100);
+                    finish();
+
+
                 }
             }
         });

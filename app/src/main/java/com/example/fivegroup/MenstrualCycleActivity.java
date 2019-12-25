@@ -16,6 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import android.content.DialogInterface;
+import androidx.appcompat.app.AlertDialog;
+
 //https://calculator.warmiehealth.com/
 public class MenstrualCycleActivity extends AppCompatActivity {
     private TextView tv_menstrualDate;
@@ -37,6 +40,8 @@ public class MenstrualCycleActivity extends AppCompatActivity {
         toolbar.setTitle("月經週期計算");
         setSupportActionBar(toolbar);
 
+        Button help = findViewById(R.id.help1);
+
         this.tv_menstrualDate = findViewById(R.id.tv_menstrualDate);//下次月經時間：下次月經日等於「本次月經日加上平均週期天數」 經期長度約為5~7天
         this.tv_dangerousDate = findViewById(R.id.tv_dangerousDate);//危險期：排卵日的前5天～後3天
         this.tv_ovulationDate = findViewById(R.id.tv_ovulationDate);//排卵日：下次月經日減掉14天的前一天
@@ -45,6 +50,29 @@ public class MenstrualCycleActivity extends AppCompatActivity {
         this.btnChooseDate = findViewById(R.id.btnChooseDate);
 
         this.btnChooseDate.setOnClickListener(chooseStartDateClickHandler);
+
+
+
+        help.setOnClickListener(new View.OnClickListener() {          //add define box
+            public void onClick(View view) {
+
+                AlertDialog alertDialog = new AlertDialog.Builder(MenstrualCycleActivity.this).create();
+                alertDialog.setTitle("功能解釋");
+                alertDialog.setMessage("下次月經時間：下次月經日等於「本次月經日加上平均週期天數」 經期長度約為5~7天\n" +
+                        "\n" +
+                        "危險期：排卵日的前5天～後3天\n" +
+                        "\n" +
+                        "排卵日：下次月經日減掉14天的前一天");
+                alertDialog.setButton(alertDialog.BUTTON_POSITIVE,"學到了", new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which){
+                    }
+                });
+                alertDialog.show();
+            }
+        });
+
+
+
     }
 
     View.OnClickListener chooseStartDateClickHandler = new View.OnClickListener() {
@@ -66,6 +94,8 @@ public class MenstrualCycleActivity extends AppCompatActivity {
             }, year, month, day).show();
         }
     };
+
+
 
     private void calcResult(){
         try {

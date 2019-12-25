@@ -119,6 +119,19 @@
             android:text="清除" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/help1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="什麼是 BMI ?" />
+    </LinearLayout>
+
 
 
 </LinearLayout>
