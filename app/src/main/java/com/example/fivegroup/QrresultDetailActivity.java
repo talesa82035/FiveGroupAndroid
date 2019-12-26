@@ -73,7 +73,7 @@ public class QrresultDetailActivity extends AppCompatActivity {
         String strOut;
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject o = jsonArray.getJSONObject(i);
-            strOut = "ing_restricted:" + o.getString("ing_restricted") + "\n";
+            strOut = o.getString("ing_restricted") + "\n";
 //            str2 = o.getString("內容");
 
 

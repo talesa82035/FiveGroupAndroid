@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("第五組");
-        toolbar.setSubtitle("專題實作");
+        toolbar.setTitle("我的健康小助手");
+//        toolbar.setSubtitle("專題實作");
         setSupportActionBar(toolbar);
 
         lv = findViewById(R.id.listViewJsonData);

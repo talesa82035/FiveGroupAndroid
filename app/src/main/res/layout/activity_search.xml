@@ -121,15 +121,15 @@
         app:layout_constraintStart_toStartOf="@+id/editText3"
         app:layout_constraintTop_toTopOf="@+id/textView8" />
 
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="今日看診"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/spinner4" />
+<!--    <CheckBox-->
+<!--        android:id="@+id/checkBox"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:text="今日看診"-->
+<!--        android:textSize="18sp"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/textView8"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/spinner4" />-->
 
     <Button
         android:id="@+id/button1"
@@ -139,7 +139,7 @@
         android:text="找醫院"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner4" />
 
     <Button
         android:id="@+id/button2"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">專題實作_第五組</string>
+    <string name="app_name">我的健康小助手</string>
     <string name="doctor">看診查詢</string>
     <string name="question">該看哪科</string>
     <string name="reviews">意見回饋</string>
